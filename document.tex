@@ -100,6 +100,11 @@
 ({#2}) {};} % labelled point
 \newcommand\flp[2]{\draw {#1} node[circle,minimum
 size=0.2cm,draw,dashed,fill=white] ({#2}) {};} %free labelled point
+\newcommand\connect[1]{
+\begin{pgfonlayer}{background}
+ \foreach \x/\y in {#1} {\draw (\x.center) -- (\y.center);}
+\end{pgfonlayer}
+}
 
 \newcommand{\itemEq}[1]{%
         \begingroup%
@@ -466,8 +471,8 @@ graphs there are $s$ topologically indistinguishable versions. Omitting all
 but one of these leads to a total of $\frac {N!} s$ topologically
 distinguishable graphs.
 These all have the same value, so if we sum over them and divide by $N!$, we
-can choose any label assignment and multiply it by $\mbox{\frac 1 {N!} \frac
-{N!} s = \frac 1 s}$.
+can choose any label assignment and multiply it by
+$\frac 1 {N!} \frac {N!} s = \frac 1 s$.
 
 The symmetry number is an important property of a graph. Some authors include it
 directly in the basic definition of a graph, thereby distinguishing between
@@ -480,6 +485,9 @@ While integration by definition turns a labelled point into a field point, turni
 a field point back into a labelled point requires a slight bit of analysis. For that purpose,
 we introduce the variational calculus, and thereby differentiation, into the graph theoretic framework.
 
+%% CHECK: Really functional derivative? Not just the variation?
+\renewcommand\zi{z}
+\renewcommand\zip{z'}
 \begin{defi}
 \label{funcderivative}
 Let $\zi$ be defined as in Defintion \ref{graphdefi_1} and let $\La: \zi \mapsto \R$ be a functional.
@@ -492,7 +500,8 @@ and $\dl \zi$ of $\zi$ by
 \end{defi}
 
 Integration over the label of a labelled point is of course a functional of the property assigned
-to that labelled point. It is therefore an excellent candidate to use the above definition. We
+to that labelled point (and the bonds adjacent to it, but we will not use that
+here). It is therefore an excellent candidate to use the above definition. We
 will use the relationship
 \begin{align}
 \label{difrelation}
@@ -503,26 +512,27 @@ will use the relationship
 \end{cases}
 \end{align}
 
-We will use these theorems on the situation given in equation \eqref{2fields} for $\zi\equiv\zip$ and generalize
-the results found there:
+We can use that on the situation given in equation \eqref{2fields} for
+$\zi\equiv\zip\equiv z$ and generalize the results found there:
 \begin{equation} %CHECK: Ableitungen in Variationsrechnung
 \begin{aligned}
-&\hspace{-.7cm}\delti{}{\zi(\r)}\begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
+&\hspace{-.7cm}\delti{}{z(\r)}\begin{tikzpicture}[baseline={(current bounding
+box.center)}]%current bounding box.center
   	\draw (0,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
   	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black,align=center] (B) {};
-  	\draw (A.east) -- node[below]{$f_\mu$} (B.west);
-	\node [above left] at (A) {\zi};
-	\node [above left] at (B) {\zi};
+  	\draw (A.east) -- node[below]{$f$} (B.west);
+	\node [above left] at (A) {z};
+	\node [above left] at (B) {z};
 	\end{tikzpicture}\\
-	&= \int \dr' \int \dr'' \delti{}{\zi(\r)} \lt[\zi(\r') f(\r',\r'') \zi(\r'')\rt]\\
-&= \int \dr' \int \dr'' \lt[\dl(\r-\r') f(\r',\r'') \zi(\r'')\rt] \\
-	&\qquad + \int \dr' \int \dr'' \dl(\r-\r'') f(\r',\r'') \zi(\r') \\
-	&= 2 \int \dr' f(\r,\r') \zi(\r') \\
+	&= \int \dr' \int \dr'' \delti{}{z(\r)} \lt[z(\r') f(\r',\r'') z(\r'')\rt]\\
+&= \int \dr' \int \dr'' \lt[\dl(\r-\r') f(\r',\r'') z(\r'')\rt] \\
+	&\qquad + \int \dr' \int \dr'' \dl(\r-\r'') f(\r',\r'') z(\r') \\
+	&= 2 \int \dr' f(\r,\r') z(\r') \\
     &=2 \ \ \ \begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
   	\draw (0,0) node[circle,minimum size=0.2cm,dashed,draw] (A) {};
   	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black] (B) {};
   	\draw (A.east) -- node[below]{$f_\mu$} (B.west);
-	\node [above left] at (B) {\zi};
+	\node [above left] at (B) {z};
 	\node [below right] at (A) {\r};
 	\end{tikzpicture}.
 	\label{funcderi:ex}
@@ -532,8 +542,8 @@ the results found there:
 The dashed lines around the left point indicate that there is no property assigned to it.
 Thus, the functional derivative of a graph is identical to turning field points
 into labelled points. One can easily explain this in a straightforward way: the functional
-derivative of a graph $\Ga$ with respect to a property $\zi(\r)$ is equal to the sum of all graphs obtained
-from $\Ga$ by turning a single field point with property $\zi$ into a point labelled $\r$, and the
+derivative of a graph $\Ga$ with respect to a property $z(\r)$ is equal to the sum of all graphs obtained
+from $\Ga$ by turning a single field point with property $z$ into a point labelled $\r$, and the
 point loses its property (or rather, adopts the new property $z^* \equiv 1$).
 
 But as is the case in equation \eqref{funcderi:ex}, this would result in summing many graphs with equal value.
@@ -600,8 +610,9 @@ be the set of symmetry numbers corresponding to $\st{\Ga_\al(\r)}$. Then
 \end{equation}
 \label{funcderi2}
 \end{lem}
-Note again that Lemma \ref{funcderi2} would look differently if all graphs already
-contained division by symmetry number.
+Of course, if $\Ga$ has no $\zi$ field points, the derivative amounts to
+zero as does the sum over the empty set on the right hand side. Note again that
+Lemma \ref{funcderi2} would look differently if all graphs already contained division by symmetry number.
 
 \subsection{Articulation Points}
 \label{ArtPoint}
@@ -620,12 +631,13 @@ to get there. The following properties are relevant in graph theory:
 \begin{itemize}
   \item \ep{connected graph}: a graph $\Ga$ with two or more points is connected if for any points
   $A, B \in \Ga$ there is a path of points and bonds connecting $A$ to $B$.
-  \item \ep{doubly, triply, \ldots $n$-connected graph}: a graph $\Ga$ with two or more points is
-  $n$-connected if for any points $A, B \in \Ga$ there are $n$ independent paths of points and bonds
-  connecting $A$ to $B$.
-  \item \ep{single-bonded graph}: a single-bond graph is a graph $\Ga$ where no double-bonds
-  exist between points $A, B \in \Ga$. Unconnected points are allowed.
-  \item \ep{singly connected graph}: a single-bonded connected graph.
+  \item \ep{doubly, triply, \ldots $n$-connected graph}: a graph $\Ga$ with $n$
+  or more points is $n$-connected if for any points $A, B \in \Ga$ there are $n$
+  independent paths of points and bonds connecting $A$ to $B$.
+%  \item \ep{single-bonded graph}: a single-bonded graph is a graph $\Ga$ where
+%  no double-bonds exist between points $A, B \in \Ga$. Unconnected points are
+  % allowed.
+%  \item \ep{singly connected graph}: a single-bonded connected graph.
   \item \ep{articulation point}: a point $A$ in a connected graph $\Ga$. If one removes
   $A$ and its adjacent bonds, the graph $\Ga$ will be divided into two or more separate graphs.
   \item \ep{reducible graph}: a graph that contains articulation points or bonds that may be
@@ -634,14 +646,19 @@ to get there. The following properties are relevant in graph theory:
 
 While these names are frequently used in graph theory, they may be understood differently in each context.
 For example, the vague definition of a reducible graph comes from the fact that it is up to the
-researcher which bonds they want to consider as fundemental for their graph. As one can see especially
-in the paper Wertheim III\cite{Wertheim3}, the correct definition in this matter is crucial
-to the types of graphs one ends up analyzing. Wertheim III also shows that
-careful characterizations of articulation points are fundamental to researches in graph theory.
+researcher which bonds they want to consider as fundemental for their graph.
+%There are often multiple layers of reducibility, for example one can first
+%remove all labelled articulation points and later all field articulation
+%points.
+As one can see especially in the paper Wertheim III\cite{Wertheim3}, the
+correct definition in this matter is crucial to the types of graphs one ends up
+analyzing. Wertheim III also shows that careful characterizations of
+articulation points are fundamental to researches in graph theory.
 
-Now, let us return to independent integration variables. Their treatment is easiest understood in a simple exemplatory calculation
-considering a three point singly connected graph. For simplicity, we will consider all properties to be
-$z$ and all bonds to be $f$.
+Now, let us return to independent integration variables. Their treatment is
+easiest understood in a simple exemplatory calculation considering a three
+point singly connected graph. For simplicity, we will consider all properties
+to be $z$ and all bonds to be $f$.
 
 \begin{align}
 \begin{aligned}
@@ -781,16 +798,12 @@ numbers and the factors $(N!)\iv$ in the exponential series.
 A similar lemma which uses articulation points is
 \begin{lem}
 \label{lemma:articulation}
-% CHECK: Für field points funktioniert es auf jeden Fall. Es müsste aber auch für labelled
-%     points klappen, dann müsste man sich nochmal überlegen, wie M und N aussehen.
-%     Man muss sich auch überlegen, wie die Symmetriezahlen einbezogen werden.
-% CHECK: topologically distinguishable? Wie sind die Graphen unterscheidbar/unterschiedlich?
 Consider two sets of connected graphs $A:=\st{\Ga_\al}$ and $B:=\st{\La_\be}$
 with corresponding sets of symmetry numbers $\st{s_\al}$ and $\st{\tilde s_\be}$. The graphs in $A$ and $B$
-do all contain a fixed number of labelled points without property and an arbitrary number
-of field points. Let $B$ contain all the subgraphs of $A$ that stay connected if the labelled
-points are removed. If any $\Ga_\al \sus A$ can be uniquely dissected into (possibly identical) graphs belonging to $B$ by
-separating $\Ga_\al$ at the labelled points, and any graph obtained by joining together
+do all contain exactly the same labelled points without property and an
+arbitrary number of field points. Let $B$ contain all the subgraphs of $A$ that stay connected if the labelled
+points are removed. If any $\Ga_\al \sus A$ can be uniquely decomposed into
+(possibly identical) graphs belonging to $B$ by separating $\Ga_\al$ at the labelled points, and any graph obtained by joining together
 (possibly identical) graphs from $B$ at the labelled points uniquely belongs to $A$, then
 \begin{equation}
 1 + \sum_{\al\ |\ \Ga_\al \in A} {s_\al}\iv\ \Ga_\al = \exp\lt(\sum_{\be\ |\ \La_\be \in B} {\tilde s_\be}\iv\ \La_\be \rt).
@@ -809,10 +822,10 @@ subgraphs, which may be finite. This result will prove useful in the following s
 \label{MCE}
 
 \subsection{Fundamentals}
-The MCE uses graph theory to tackle statistical mechanics. Our task is to acquire thermodynamic
-properties of a system of identical particles moving in the fixed volume $V$ at the fixed temperature $T$
-and the fixed chemical potential $\mu$. The system is to be considered uniform, that is all properties 
-have the same value in the entire system.
+The MCE uses graph theory to tackle statistical mechanics. Our task is to
+acquire thermodynamic properties of a system in thermal equilibrium which
+contains identical particles moving in the fixed volume $V$ at the fixed
+temperature $T$ and the fixed chemical potential $\mu$. The system is to be considered uniform, that is all properties have the same value throughout the entire system.
  The properties of interest may for example be the \ep{pressure} $p$
 or the \ep{density} $\rho$. To that end, we consider the graph
 theoretical approach to obtain a useful expression for the \ep{grand canonical partition function} $\Xi$,
@@ -903,7 +916,7 @@ $\tilde z$ and $z$ have different dimensions.
 % which are obviously very simple to treat when integrating over constant functions.
 In the framework of graph theory, our points carry property functions. We will therefore treat the fugacity as a constant function
 \begin{equation}
-z(\r):\equiv z.
+z(i):\equiv z.
 \label{zconst}
 \end{equation} 
 
@@ -940,112 +953,61 @@ start from equation \eqref{GrandCanonical} to reach a simplified expression
 This sum still contains many graphs of equal value. These can be removed by arguments outlined
 in Section \ref{GraphSym}. We drop the labels and include symmetry numbers for
 every graph in \eqref{Grand:simple}. It is therefore possible to express $\Xi$ in terms of graphs according to
-\begin{equation}
+
+\newcommand\gbox{\makebox[1.05cm][c]} % GRAPH BOX
+\newcommand\fgbox{\ph{\frac 1 2}\gbox} % GRAPH BOX with fraction
+\newcommand\twofp{
+\fp{(0,0)}{A}
+\fp{(.7,0)}{B}
+}
+\newcommand\threefp{
+\fp{(0,0)}{A}
+\fp{(.7,0)}{B}
+\fp{(.35,.7)}{C}
+}
+\begin{align}%{5}
 \begin{aligned}
-\Xi&=1+
+\Xi=&\ph{\frac 1 2}\gbox{1}+
+\ph{\frac 1 2}\gbox{\begin{tikzpicture}[baseline={([yshift=-.3em]current
+bounding box.center)}]
+  \fp{(0,0)}{A}
+\end{tikzpicture}}
++
+\frac 1 2
 \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
+  \twofp
 \end{tikzpicture}
 +
 \frac 1 2
 \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-\end{tikzpicture}
-+
-\frac 1 2
-\begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw (A.center) --  (B.center);
-\end{tikzpicture}
+  \twofp
+  \connect{A/B};
+\end{tikzpicture}&
 \\
-&+\frac 1 6
++&\frac 1 6
 \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
+  \threefp
 \end{tikzpicture}
 +\frac 1 2
 \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) --  (B.center);
+  \threefp
+  \connect{A/B}
 \end{tikzpicture}
 +\frac 1 2
 \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) --  (B.center);
-  \draw (A.center) --  (C.center);
+  \threefp
+  \connect{A/B,A/C}
 \end{tikzpicture}
-+ \frac 1 6
++\frac 1 6
 \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) --  (B.center);
-  \draw (A.center) --  (C.center);
-  \draw (B.center) --  (C.center);
-\end{tikzpicture}
+    \threefp
+  \connect{A/B,A/C,B/C}
+\end{tikzpicture}&
 \\
-&+ \ldots .
++& \ldots 
 \end{aligned}
 \label{Grand:long}
-\end{equation}
-% \begin{aligned}
-% \Xi&=1+
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-% \end{tikzpicture}
-% +
-% \frac 1 2\lt\{
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-%   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-% \end{tikzpicture}
-% +
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-%   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-%   \draw (A.center) --  (B.center);
-% \end{tikzpicture}
-% \rt\}\\
-% &+\frac 1 6\lt\{
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-%   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-%   \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-% \end{tikzpicture}
-% +3
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-%   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-%   \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-%   \draw (A.center) --  (B.center);
-% \end{tikzpicture}
-% +3
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-%   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-%   \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-%   \draw (A.center) --  (B.center);
-%   \draw (A.center) --  (C.center);
-% \end{tikzpicture}
-% +
-% \begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-%   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-%   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-%   \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-%   \draw (A.center) --  (B.center);
-%   \draw (A.center) --  (C.center);
-%   \draw (B.center) --  (C.center);
-% \end{tikzpicture}
-% \rt\}\\
-% &+ \ldots .
-% \end{aligned}
+\end{align}
 
 We can now go on to use the results of the previous section to further simplify the
 sum given here. To do so, we have a closer look at \eqref{Grand:long}. It has the form of
@@ -1058,8 +1020,9 @@ set of all connected graphs with $N \ge 1$. Using \eqref{Lemma5:eq} on \eqref{Gr
 \begin{equation}
 \begin{aligned}
 \ln \Xi&=
-\begin{tikzpicture}[baseline={([yshift=-.3em]current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
+\ph{.}\begin{tikzpicture}[baseline={([yshift=-.3em]current
+bounding box.center)}]
+  \fp{(0,0)}{A}
 \end{tikzpicture}
 +
 \frac 1 2
@@ -1121,13 +1084,16 @@ set of all connected graphs with $N \ge 1$. Using \eqref{Lemma5:eq} on \eqref{Gr
 \\
 &=\lt\{\te{Sum of all connected graphs with } N \ge 1 \rt. \\
 &\lt.\ \ \ \te{ points. All points are } z \te{ field points and are}\rt. \\
-&\lt.\ \ \ \ \te{connected by }f\te{-bonds. All graphs are weigh-}\rt. \\
-&\lt.\ \ \ \ \te{ted by symmetry numbers 1/} s. \rt\}
+&\lt.\ \ \ \ \te{connected by }f\te{-bonds. (All graphs are weigh-}\rt. \\
+&\lt.\ \ \ \ \te{ted by symmetry numbers 1/} s.) \rt\}
 \end{aligned}
 \label{Grand:log}
 \end{equation}  
-The property $\ln \Xi$ is of great importance to thermodynamic descriptions of our system,
-since it yields a thermal equation of state (EOS) for the pressure $p$ by
+In the following, we will not mention that graphs in sums are weighted by
+symmetry numbers, since this will apply to all graphs we will look at. The
+property $\ln \Xi$ is of great importance to thermodynamic descriptions of our
+system, since it yields a thermal equation of state (EOS) for the pressure $p$
+by
 \begin{equation}
 \be p V = \ln \Xi.
 \label{bpV}
@@ -1151,26 +1117,28 @@ We will need \eqref{Om:deri} later on.
 Another important property is the number density $\rho$. It is the probability
 of finding a particle at a given position while ignoring the positions of all
 other particles. To get a good representation, we can write $\Xi$ by
+%% CHECK: what about orientation?
 \begin{equation}
-\Xi = \sum_{N=0}^\infty \int\dr^N P(N,\r^N)
+\Xi = \sum_{N=0}^\infty \int\dr^N P(N;\r^N)
 \label{Grand:DifferentXi} 
 \end{equation}  
 with the probability distribution
 \begin{equation}
-P(N,\r^N) = \frac 1 {N!} z^N \exp(-\be V(\r^N)). 
+P(N;\r^N) = \frac 1 {N!} z^N \exp(-\be V(\r^N)). 
 \end{equation}
 %% CHECK: Delta peaks too difficult. Expression not necessary.
 $\rho$ is then given by the grand canonical average of the delta peak, yielding
 \begin{equation}
 \begin{aligned}
 \rho(1) %&= \lara{\dl(\cd-1)}_\Xi\\ 
-&=\frac 1 \Xi \sum_{N=1}^\infty N \int\di(2)\cdots\di(N) P(N,\r^N) \\
+&=\frac 1 \Xi \sum_{N=1}^\infty N \int\di(2)\cdots\di(N) P(N;1,\ldots,N) \\
 &= z \ \frac 1 \Xi \deri \Xi z = z \deri {\ln \Xi} z.
 \end{aligned}
 \label{Grand:rho}
 \end{equation}
-The factor $N$ in the integral equation includes indistinguishalbe particles. There are higher order
-number density functions, to which we will come back at the very end of this section. The 
+The factor $N$ in the integral equation takes into account identical,
+therefore indistinguishable particles.
+There are higher order number density functions, to which we will come back at the very end of this section. The 
 expectation value of the number $N$ of particles in the system depends on $\rho$ by
 \begin{equation}
 \bar N = \int \di(1) \rho(1).
@@ -1190,20 +1158,21 @@ We can similarly replace $z$ by $z(1)$ in \eqref{Grand:rho} and replace $\ln \Xi
 If we apply Lemma \ref{funcderi2} to each graph, we can express the number density $\rho(1)$ by graphs:
 \begin{equation}
 \begin{aligned}
-\rho(1)=
-\hskip.1cm &\begin{tikzpicture}[baseline=-.1cm]
+\rho(1)=&
+\fgbox{\begin{tikzpicture}[baseline=-.1cm]
   \draw(0,0) node[circle,minimum size=.2cm,draw] (A) {};
   \node [below right] at (A) {1};
-\end{tikzpicture}
-\hskip-.2cm+
-\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
+\end{tikzpicture}}
++
+\fgbox{\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding
+% box.center)}]
   \draw(0,0) node[circle,minimum size=.2cm,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw (A.east) --  (B.center);
   \node [below right] at (A) {1};
-\end{tikzpicture}
+\end{tikzpicture}}
 +
-\begin{tikzpicture}[baseline=.25cm]
+\gbox{\begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw(.35,.7) node[circle,minimum size=.2cm,draw] (C) {};
@@ -1211,17 +1180,17 @@ If we apply Lemma \ref{funcderi2} to each graph, we can express the number densi
   \draw (A.center) --  (C.center);
   \draw node[circle,minimum size=.2cm,draw,fill=white,opacity=1] at (C) {};
   \node [below right] at (C) {1};
-\end{tikzpicture}
+\end{tikzpicture}}
 +\frac 1 2
-\begin{tikzpicture}[baseline=.25cm]
+\gbox{\begin{tikzpicture}[baseline=.25cm]
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw(.35,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
   \draw (0,0) --  (B.center);
   \draw (0,0) --  (C.center);
   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=white] (A) {};
   \node [below right] at (A) {1};
-\end{tikzpicture}
-\\&+ 
+\end{tikzpicture}}
+\\+& 
 \frac 1 2
 \begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,draw] (A) {};
@@ -1248,10 +1217,9 @@ If we apply Lemma \ref{funcderi2} to each graph, we can express the number densi
 \end{tikzpicture}
 +\ldots 
 \\
-&=\lt\{\te{Sum of all graphs obtained from \eqref{Grand:log} by} \rt. \\
-&\ \ \ \ \ \te{turning a field point into a labelled point.}\\
-&\lt.\ \ \ \ \te{The graphs are weighted by the correct}\rt. \\
-&\lt.\ \ \ \ \te{symmetry numbers } 1/s.\rt\}
+=&\lt\{\te{Sum of all graphs obtained from \eqref{Grand:log} by} \rt. \\
+&\ph{\{}\te{turning one of the field points into a labelled}\\
+&\ph{\{}\te{point.}\}
 \end{aligned}
 \label{Grand:reducedrho}
 \end{equation}
@@ -1283,16 +1251,17 @@ We will see that reducing the right hand side of this equation leads to the desi
 relation. Similar to \eqref{Grand:reducedrho}, we get
 \begin{equation}
 \begin{aligned}
-\deri{\ln\Xi}{z(1)}  =
+\delti{\ln\Xi}{z(1)}  =
 1
 &+
-\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
+\fgbox{\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding
+% box.center)}]
   \draw(0,0) node[circle,minimum size=.2cm,dashed,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw (A.east) --  (B.center);
   \node [below right] at (A) {1};
-\end{tikzpicture}
-+
+\end{tikzpicture}}
++\fgbox{
 \begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
@@ -1301,7 +1270,7 @@ relation. Similar to \eqref{Grand:reducedrho}, we get
   \draw (A.center) --  (C.center);
   \draw node[circle,minimum size=.2cm,draw,fill=white,dashed,opacity=1] at (C) {};
   \node [below right] at (C) {1};
-\end{tikzpicture}
+\end{tikzpicture}}
 +\frac 1 2
 \begin{tikzpicture}[baseline=.25cm]
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
@@ -1352,15 +1321,16 @@ c(1):=\ln\lt[\frac {\rho(1)} {z(1)}\rt],
 and using the above simplifications, it is
 \begin{equation}
 \begin{aligned}
-c(1)&=
-\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
+c(1)=&
+\fgbox{\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding
+% box.center)}]
   \draw(0,0) node[circle,minimum size=.2cm,dashed,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw (A.east) --  (B.center);
   \node [below right] at (A) {1};
-\end{tikzpicture}
+\end{tikzpicture}}
 +
-\begin{tikzpicture}[baseline=.25cm]
+\gbox{\begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw(.35,.7) node[circle,minimum size=.2cm,dashed,draw] (C) {};
@@ -1368,7 +1338,7 @@ c(1)&=
   \draw (A.center) --  (C.center);
   \draw node[circle,minimum size=.2cm,draw,fill=white,dashed,opacity=1] at (C) {};
   \node [below right] at (C) {1};
-\end{tikzpicture}
+\end{tikzpicture}}
 + 
 \frac 1 2
 \begin{tikzpicture}[baseline=.25cm]
@@ -1393,8 +1363,8 @@ c(1)&=
   \draw (C.center) --  (D.center);
   \node [below right] at (A) {1};
 \end{tikzpicture}
-\\&
-\ \ \ \ \ +
+\\
++&
 \frac 1 2
  \begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,dashed,draw] (A) {};
@@ -1420,11 +1390,10 @@ c(1)&=
 +
 \ldots 
 \\
-&=\{\te{Sum of all graphs with one labelled point 1,}\\
-&\ \ \ \ \ N_z\ge 1\ z\te{ field points connected by } f \te{-bonds}\\
-&\ \ \ \ \ \te{such that the labelled point is no articulation}\\
-&\ \ \ \ \ \te{point. The graphs are weighted by the correct}\\
-&\ \ \ \ \ \te{symmetry numbers 1/s.}\}
+=&\{\te{Sum of all graphs with one labelled point 1}\\
+&\ph{\{}\te {and }N_z\ge 1\ z\te{ field points connected by } f \te{-bonds}\\
+&\ph{\{}\te{such that the labelled point is no articulation}\\
+&\ph{\{}\te{point.}\}
 %\\
 %&=\{\mbox{\parbox{Let's try to have fun with a lot of text in this mbox which does not break shit}}\}
 \end{aligned}
@@ -1435,27 +1404,32 @@ of those with  $N=4$ points. We chose them to illustrate the next step in our re
 used the fact that in some graphs of $\rho$ the labelled point is an articulation point. However,
 there are also numerous graphs where at least one field point is an articulation point. These are
 still contained in $c(1)$, in \eqref{TopRed:c(1)} they are in the second, forth, fifth and sixth
-graph. These graphs can all be constructed from a at least doubly connected subgraph containing the labelled point and
-a graph from $\rho$ in \eqref{Grand:reducedrho} attached to each field point such that the field
-point is replaced by the labelled point in $\rho$ and turned into a field point. The attached graph may
-be the one point graph. One can group all the graphs in $c(1)$ into equivalence classes by defining
-the \ep{maximal connected subgraph} $\Ga_m$ for any graph $\Ga$: it is the subgraph with the most field points
-in the set of subgraphs free of articulation field points that contain the labelled point. Since the labelled
-point is not an articulation point in the graphs of $c(1)$, $\Ga_m$ is unique for any $\Ga$ in $c(1)$. If
-we know look at all the graphs contained in one of the equivalence classes defined by $\Ga_m$, we see
-that it contains exactly all graphs obtainable by attaching graphs from $\rho$ to the field points
-in the manner described above. We can therefore use the idea of changing the property of a point
-we described in Section \ref{ArtPoint} and change the property of the field points from $z(1)$
-to $\rho(1)$. Then, we can express $c(1)$ by
+graph.
+%% CHECK: terrible explanation
+These graphs can all be constructed from an at least doubly connected
+subgraph containing the labelled point and a graph from $\rho$ in
+\eqref{Grand:reducedrho} attached to each field point such that the field point
+is overwritten by the labelled point in $\rho$. The attached graph may be the
+one point graph. One can group all the graphs in $c(1)$ into equivalence
+classes by defining the \ep{maximal connected subgraph} $\Ga_m$ for any graph
+$\Ga$: it is the subgraph with the most field points in the set of subgraphs
+free of articulation field points that contain the labelled point. Since the
+labelled point is not an articulation point in the graphs of $c(1)$, $\Ga_m$ is
+unique for any $\Ga$ in $c(1)$. If we now look at all the graphs contained in
+one of the equivalence classes defined by $\Ga_m$, we see that it contains
+exactly all graphs obtainable by attaching graphs from $\rho$ to the field
+points in the manner described above. We can therefore use the idea of changing
+the property of a point we described in Section \ref{ArtPoint} and change the
+property of the field points from $z(1)$ to $\rho(1)$. Then, we can express $c(1)$ by
 \begin{equation}
 \begin{aligned}
-c(1)=& 1 
+c(1)=& \fgbox{ 
 \begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
   \draw(0,0) node[circle,minimum size=.2cm,dashed,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=blue, opacity=1] (B) {};
   \draw (A.east) --  (B.west);
   \node [below right] at (A) {1};
-\end{tikzpicture}
+\end{tikzpicture}}
 +
 \frac 1 2
 \begin{tikzpicture}[baseline=.25cm]
@@ -1541,8 +1515,7 @@ c(1)=& 1
 =&\{\te{Sum of all graphs with one labelled point 1,}\\
 &\ N_\rho\ge 1\ \rho\te{ field points connected by } f \te{-bonds}\\
 &\ \te{such that none of the points is an articulation}\\
-&\ \te{point. The graphs are weighted by the correct}\\
-&\ \te{symmetry numbers 1/s.}\}
+&\ \te{point.}\}
 %\\
 %&=\{\mbox{\parbox{Let's try to have fun with a lot of text in this mbox which does not break shit}}\}
 \end{aligned}
@@ -1587,7 +1560,7 @@ potential. The only chore left is to find the missing graph sum \cze. It is howe
 to guess from \eqref{TopRed:c(1)ByRho}. It must be
 \begin{equation}
 \begin{aligned}
-\cze&=
+\cze=&
 \frac 1 2
 \begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
   \draw(0,0) node[circle,minimum size=.2cm,fill=blue,draw] (A) {};
@@ -1595,7 +1568,7 @@ to guess from \eqref{TopRed:c(1)ByRho}. It must be
   \draw (A.east) --  (B.west);
 \end{tikzpicture}
 +
-\frac 1 6
+\ph{.}\frac 1 6\ph{.}
 \begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,fill=blue,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=blue] (B) {};
@@ -1621,9 +1594,7 @@ to guess from \eqref{TopRed:c(1)ByRho}. It must be
   \draw (B.center) --  (D.center);
 \end{pgfonlayer}
 \end{tikzpicture}
-+
-\\&
-\ \ \ \ \ +
+\\+&
 \frac 1 8
  \begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,fill=blue,draw] (A) {};
@@ -1656,11 +1627,9 @@ to guess from \eqref{TopRed:c(1)ByRho}. It must be
 +
 \ldots 
 \\
-&=\{\te{Sum of all connected graphs with } N \ge 2\ \\
-&\ \ \ \ \ \rho \te{ field points connected by } f \te{-bonds such }\\
-&\ \ \ \ \ \te{that none of the points is an articulation point. }\\
-&\ \ \ \ \ \te{The graphs are weighted by the correct}\\
-&\ \ \ \ \ \te{symmetry numbers 1/s.}\}
+=&\{\te{Sum of all connected graphs with } N \ge 2\ \\
+&\ph{\{}\rho \te{ field points connected by } f \te{-bonds such }\\
+&\ph{\{}\te{that none of the points is an articulation point.}\}
 %\\
 %&=\{\mbox{\parbox{Let's try to have fun with a lot of text in this mbox which does not break shit}}\}
 \end{aligned}
@@ -1690,7 +1659,9 @@ which leads to
 We have therefore reached the goal of this section and derived equations for $\ln \Xi$ and $\be A$
 that do not depend on the possibly disadvantageous property $z$ but on the number density $\rho$.
 Before proceeding, we want to introduce a different class of functions that are often
-of interest to thermodynamic models.
+of interest to thermodynamic models. One may consider them a generalization of
+$c(1)$ to multiple labelled points and they, too, are called correlation
+functions.
 
 %\newcommand\rs{\rho^{(s)}}
 \newcommand\os{1,\ldots,s}
@@ -1707,7 +1678,7 @@ locations $\os$. They are described by a more general form of \eqref{Grand:rho},
 \begin{equation}
 \begin{aligned}
 \ros%=& \lara{\dl(\cd-1)\cdots\dl(\cd-s)}_\Xi\\
-=&\sum_{N=s}^{\infty} \int\di(s)\cdots\di(N) \frac{N!}{(N-s)!}P(N,\r^N),
+=&\sum_{N=s}^{\infty} \int\di(s)\cdots\di(N) \frac{N!}{(N-s)!}P(N;\r^N),
 \end{aligned}
 \label{sPart:ros.simple}
 \end{equation}
@@ -1723,16 +1694,18 @@ graphs. However, we can define the \ep{Ursell functions}
 \begin{equation}
 \uos:=\prod_{i=1}^s z(i) \frac{\dl^s \ln \Xi}{\prod_{i=1}^s \dl z(i)}
 \end{equation}
-that are in close relation to $\ros$. We can investigate this relation by
-defining for $s \ge 2$ the \ep{correlation functions}
+that are in close relation to $\ros$. To investigate this relation, we
+define for $s \ge 2$ the \ep{correlation functions}
 \newcommand\g{g(12)}
 \renewcommand\h{h(12)}
 \begin{equation}
 h(1\cdots s)=\frac{\uos}{\rho(1)\cdots\rho(s)}
+\label{sPart:hsimple}
 \end{equation}
 and
 \begin{equation}
 g(1\cdots s)=\frac{\ros}{\rho(1)\cdots\rho(s)}.
+\label{sPart:gsimple}
 \end{equation}
 In the special case of $s=1$, we already met the function $h(1)$, which is the
 same as $c(1)$ in \eqref{TopRed:cDefi}. We can now consider the relationship
@@ -1757,9 +1730,12 @@ For $s=2$, we find
 \end{equation}
 It becomes evident that by an analogous procedure any $\ros$ can be described by $u(1\cdots r)$ with $r\le s$.
 Since the $\uos$ are all sums of graphs obtained from $\ln \Xi$ by turning $s$ field points into labelled points,
-$\ros$ will have a similar form. Even better, it is possible to express an $s$-particle distribution
-entirely by $1$-particle distribution functions times so-called \ep{correlation functions}. We will explain this
-with the example of the two-particle correlation functions $\g$ and $\h$. Let us look closer at $\ut$. It contains
+$\ros$ will have a similar form.
+% Even better, it is possible to express an $s$-particle distribution
+%entirely by $1$-particle distribution functions times $g(\os)$ or $h(\os)$ by
+%\eqref{sPart:gsimple} and \eqref{sPart:hsimple}.
+We will explain this with the example of the two-particle correlation functions
+$\g$ and $\h$. Let us look closer at $\ut$. It contains
 
 \newcommand\twoart{
   \draw(0,0) node[circle,minimum size=.2cm,draw] (A) {};
@@ -1905,9 +1881,9 @@ with the example of the two-particle correlation functions $\g$ and $\h$. Let us
 \end{equation} 
 We can see that any graph in $\ut$ can be constructed from a subgraph in which
 none of the labelled points is an articulation point (the field points may
-still be articulation points) and a graph from $\rho(1)$ appended to the point 
-1 and similarly for the point 2. Note that the subgraph is thus unique. The sum
-over all these subgraphs is the correlation function $\h$, given by
+still be articulation points) and a graph from $\rho(1)$ appended
+(i.e. multiplied) to the point 1 and a graph from $\rho(2)$ to the point 2.
+Note that the subgraph is thus unique. The sum over all these subgraphs is the correlation function $\h$, given by
 \renewcommand\twoart{
   \draw(0,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (B) {};
@@ -2042,11 +2018,12 @@ of an $f$-bond and no bond is an $e$-bond. We can therefore write
 \end{aligned}
 \label{sPoint:g}
 \end{equation}
-It is possible to further reduce $\g$ by the same arguments we used to reduce $c(1)$. Since the field
-points may still be articulation points, the sum in $\g$ contains maximal articulation point free subgraphs
-and all graphs resulting from appending some graph of $\rho(1)$ to each field point. We can therefore replace
-$z$ field points by $\rho$ field points in \eqref{sPoint:g}, arriving at
-\renewcommand\threeart{
+Dashed bonds are $e$-bonds. It is possible to further reduce $\g$ by the same
+arguments we used to reduce $c(1)$. Since the field points may still be
+field articulation points, the sum in $\g$ contains maximal articulation point
+free subgraphs and all graphs resulting from appending some graph of $\rho(1)$ to
+each field point. We can therefore replace $z$ field points by $\rho$ field
+points in \eqref{sPoint:g}, arriving at \renewcommand\threeart{
 \begin{pgfonlayer}{main}
   \twoart
   \draw(.35,.7) node[circle,minimum size=.2cm,fill=blue,draw] (C) {};
@@ -3089,11 +3066,6 @@ $\kappa_s$. Let us look at the dimer case, where we find
   \Hyperpoint{(0,1.5)}{3}{#3}
   \Hyperpoint{(1.5,1.5)}{4}{#4}
   }
-\newcommand\connect[1]{
-\begin{pgfonlayer}{background}
- \foreach \x/\y in {#1} {\draw (\x.center) -- (\y.center);}
-\end{pgfonlayer}
-}
 \begin{eqnarray}
 \begin{aligned}
 \kappa_2&=&
