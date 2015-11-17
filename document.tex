@@ -7,7 +7,6 @@
 %% CHECK: Graph alignment with array environment.
 %% CHECK: Mengen und Teilmengen schwierig. Müsste ja eigentlich immer sowas sein wie
  %        M \in P(\Ga).
-%% SEE THAT PA?
 \usepackage[utf8]{inputenc}
 \usepackage{MyChem}
 \usepackage{MyStandard}
@@ -64,6 +63,8 @@
 \newcommand\supst{\enmat{\hskip.035cm^*\hskip-.04cm\supseq}\hphantom{.}}
 
 \newcommand\pab{\enmat{\phi_{AB}}}
+
+\newcommand\fab{\enmat{f_{AB}}}
 \newcommand\AB{\enmat{{AB}}}
 \newcommand\roz{\enmat{\rho_0}}
 \newcommand\rone{\enmat{\rho_1}}
@@ -92,6 +93,13 @@
 \pgfdeclarelayer{foreground}
 \pgfsetlayers{background,main,foreground}  
 
+%% GRAPH COMMANDS
+\newcommand\fp[2]{\draw {#1} node[circle,minimum size=0.2cm,draw,fill=black]
+({#2}) {};} %field point
+ \newcommand\lp[2]{\draw {#1} node[circle,minimum size=0.2cm,draw,fill=white]
+({#2}) {};} % labelled point
+\newcommand\flp[2]{\draw {#1} node[circle,minimum
+size=0.2cm,draw,dashed,fill=white] ({#2}) {};} %free labelled point
 
 \newcommand{\itemEq}[1]{%
         \begingroup%
@@ -139,7 +147,7 @@
 
 {\Large Forschungsarbeit supervised by \\[.7cm]
 Prof. Dr.-Ing. J. Groß \\[.4cm]
-Dipl.-Ing. Wasilios Zmpitas}\\[.4cm]
+M. Sc. Wasilios Zmpitas}\\[.4cm]
 
 
 { \Large  Institut für Technische Thermodynamik, Universität Stuttgart, June 2015}
@@ -191,10 +199,12 @@ compared and fitted to simulation results. Section \ref{Con} gives concluding re
 \section{Graph Theory}
 \label{GrT}
 \subsection{Basic Definitions}
-Fundamental to everything that follows is the basic notion of a graph. This section shall give a definition of various
-common elements of graphs and mention three important lemmas that are often used in graph theory. To simplify the
-application in the following sections, we will use physically interpretable function names. However, the theory
-is purely mathematical and does not require any physical argumentation.
+Fundamental to everything that follows is the basic notion of a graph. This
+section shall give a definition of various common elements of graphs and
+mention three important lemmas that are often used in graph theory. To simplify
+the application in the following sections, we will use physically interpreable
+function names. However, the theory is purely mathematical and does not require
+any physical argumentation by itself.
 
 The basic notion of a graph is described in a first definition.
 
@@ -248,16 +258,22 @@ in one and two variables, respectively. We call $z_i$ the \ep{properties} and $f
 
 A quick remark on the last item of the definition: if there is no bond of type $\mu$ present between
 points $i$ and $j$, $m(\mu,ij)$ will be zero and the contribution of the bond-term in the product will
-be one. For all application we will discuss in this article, $m(\mu,ij)$ will be one or zero.
+be one. For all application we will discuss in this article, $m(\mu,ij)$ will
+be one or zero. Some authors, including for example Stell \cite{Stell}, call such
+graphs were not more than one bond between two particles is allowed \ep{simple
+graphs}. Since we will only meet such simple graphs, we keep the nomenclature
+short by just calling them graphs.
 
 As a first advantage of graph theory, we can see that large products of functions can be simplified
 by replacing them with rather simple drawings. The true power within this ansatz is the easy
-manipulation of complicated (sums of) functions by set theoretic considerations on graphs.
+manipulation of complicated (sums of) functions by set theoretic
+or topological considerations on graphs.
 
-Note that the label of a labelled point is not the property $z_i$ but the fact that a fixed variable $\bo r$
-is assigned to that point. For brevity, the property is often omitted when it is clear from the context.
-The same applies to bonds. Sometimes different graphical representations are used to distinguish between
-bond types.
+Note that the label of a labelled point is not the property $z_i$ but the fact
+that a fixed variable $\bo r$ is assigned to that point. For brevity, the names
+of properties, labels or bonds can be omitted when it is clear from the
+context. Sometimes different graphical representations are used to distinguish
+between bond types or properties.
 
 The next definition introduces integration into graph theory.
 
@@ -267,28 +283,35 @@ A \ep{field point} is a filled point (usually without a label) and means integra
 \begin{enumerate}[i.]
   \item \itemEq{
   \begin{tikzpicture}[baseline={([yshift=-.7em]current bounding box.center)}]%current bounding box.center
-  	\draw (1,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
+  	\fp{(0,0)}A
 	\node [above left] at (A) {$z_1$};
 	\end{tikzpicture}
-= \int_\Om \dr_1 z_1(\r_1) .
+= \int_\Om \dr_1\ z_1(\r_1) .
   }
-  \item \itemEq{
-  \begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
-  	\draw (0,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
-  	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black] (B) {};
+  \item
+  \itemEq{\begin{tikzpicture}[baseline={(current bounding box.center)}]%current
+  % bounding box.center
+  	\fp{(0,0)} A
+  	\fp{(1.1,0)} B
   	\draw (A.east) -- node[below]{$f_\mu$} (B.west);
 	\node [above left] at (A) {$z_1$};
 	\node [above left] at (B) {$z_2$};
-	\end{tikzpicture}
-= \int_\Om \dr_2 \int_\Om \dr_1 z_1(\r_1) f_\mu(\r_1,\r_2) z_2(\r_2).
-\label{2fields}
-}
- \item And the general version:\vskip5pt%\newline
-  \{A graph with $n$ labelled points and $m$ field points and\\* \vphantom{}\hskip5pt  arbirtrary bonds\}\\
-  \itemEq{\begin{aligned}
-  = \int_\Om &\dr_{n+m} \cdots \int_\Om \dr_{n+1} \times \{\te{the same graph with all}\\ &\te{field points carrying label $\r_{n+1}$ to $\r_{n+m}$}\}.
+	\end{tikzpicture}= \int_\Om \dr_2 \int_\Om \dr_1 z_1(\r_1) f_\mu(\r_1,\r_2)
+z_2(\r_2).
+\label{2fields}}
+%	\vskip-.5cm
+
+ \item And the general version:%\vskip5pt%\newline
+   \begin{equation}
+   \begin{aligned}
+  &\te{\{A graph with $n$ labelled points and $m$ field points}\\
+  &\ph\{\te{and arbirtrary bonds\}}\\
+  &= \int_\Om \dr_{n+m} \cdots
+  \int_\Om \dr_{n+1} \times \{\te{the same graph with }\\
+  &\qquad\te{all field points carrying label $\r_{n+1}$ to $\r_{n+m}$}\}.
   \label{fielddefinition}
-  \end{aligned}}
+  \end{aligned}
+   \end{equation}
 
 \end{enumerate}
 \end{defi}
@@ -296,8 +319,12 @@ A \ep{field point} is a filled point (usually without a label) and means integra
 With graphs, the interdependences of integration variables are clearly visible.
 This helps to easily detect \ep{steric incompatibilities}, e.g. graphs vanishing
 because their geometry always results in a value of zero. In the hard spheres case
-we will study, this is always due to overlapping spheres for those geometries
-where all bonds differ from 0.
+we will study, this is always due to overlapping spheres.
+
+The variables $\r_1,\ldots,\r_N$ are often abbreviated by $1,\ldots,N$. This is
+also done if the orientations $\Om_1,\ldots,\Om_N$ of the particles play an
+important role (i.e. if they are non-spherical), where the variable $i$ then
+contains both $\r_i$ and $\Om_i$.
 
 \subsection{Graph Symmetry}
 \label{GraphSym}
@@ -311,18 +338,21 @@ role. Therefore, some authors (e.g. Morita \& Hiroike in their definitions $3$ a
 use a definition that distinguishes between graphs with labelled field points and graphs with unlabelled
 field points. We will also give this definition for completeness, but note that we will not stick to it.
 For a deeper understanding, we will consider the graph
-\begin{equation}
-\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\newcommand\exgraph[3]{
   \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
   \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
   \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) --  (B.center);
+  \draw (A.center) -- (B.center);
+  \node [below right] at (A) {#1};
+  \node [below right] at (B) {#2};
+  \node [below right] at (C) {#3};
+  }
+  \begin{equation}
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+  \exgraph{}{}{}
 \end{tikzpicture} \ \ :=\ \ 
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) --  (B.center);
+  \exgraph{}{}{}
   \node at (.65,-.25) {$f$};
   \node [above left] at (A) {$z$};
   \node [above left] at (B) {$z$};
@@ -331,37 +361,21 @@ For a deeper understanding, we will consider the graph
 \label{GraphSym:Fundamental}
 \end{equation}
 We will use the shorthand form on the left hand side of \eqref{GraphSym:Fundamental} to
-keep the overview. Obviously, we could label the field points arbitrarily. It is, however, 
-convenient to introduce an equivalency relation between
-two graphs with labelled (field) points: two graphs are \ep{topologically indistinguishable}
-if field points with the same label $i$ carry the same properties and pairs of points with
+keep the overview. Obviously, as long as we label the field points in a
+distinguishable manner, their labels are arbitrary and only serve as dummy names
+for the integration process.
+It is, however, convenient to introduce an equivalency relation between
+two graphs with labelled points and field points carrying labels: two graphs are
+\ep{topologically indistinguishable} if points with the same label $i$ carry the same properties and pairs of points with
 labels $i$ and $j$ are linked by the same bonds in both graphs. For example,
 
 \begin{equation}
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) -- (B.center);
-  %\node [above left] at (A) {$z$};
-  %\node [above left] at (B) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {1};
-  \node [below right] at (B) {2};
-  \node [below right] at (C) {3};
+  \exgraph{1}{2}{3}
 \end{tikzpicture}
 \cong
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) -- (B.center);
-  %\node [above left] at (A) {$z$};
-  %\node [above left] at (B) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {2};
-  \node [below right] at (B) {1};
-  \node [below right] at (C) {3};
+  \exgraph{2}{1}{3}
 \end{tikzpicture}.
 \label{equivalent graph}
 \end{equation}
@@ -370,31 +384,11 @@ topologically distinguishable -- indicated here by the $\ncong$ sign -- if the b
 properties assigned to their points differ, as in 
 \begin{equation}
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) --  (B.center);
-  %\node at (.65,-.25) {$f$};
-  %\node [above left] at (A) {$z$};
-  %\node [above left] at (B) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {1};
-  \node [below right] at (B) {2};
-  \node [below right] at (C) {3};
-\end{tikzpicture}
+  \exgraph{1}{2}{3}
+  \end{tikzpicture}
 \ncong
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) -- (C.center);
-  %\node at (.45,.4) {$f$};
-  %\node [above left] at (A) {$z$};
-  %\node [above left] at (B) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {1};
-  \node [below right] at (B) {2};
-  \node [below right] at (C) {3};
+  \exgraph{1}{3}{2}
 \end{tikzpicture},
 \label{not equivalent graph}
 \end{equation}
@@ -404,8 +398,27 @@ The numerical value represented by all graphs in \eqref{equivalent graph} and
 mathematical point of view the labelling of the integration variables
 is of no importance. So why is this distinction necessary at all?
 
-The answer to this question lies in the application of graph theory to problems of physics.
-When applying graph theory to the grand canonical partition function in Section \ref{MCE},
+There are multiple answers to that question. First of all, there is no unique
+way to transform some expression containing properties, bonds and integrals into
+a graph. Mathematically, the expressions
+\begin{equation}
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\exgraph{1}{2}{3}
+\end{tikzpicture}
+\cong
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\fp{(0,0)} A
+\fp{(1,0)} B
+\fp{(2,0)} C
+\foreach \x/\y in {A/1,B/3,C/2} {\node [below right] at (\x) {\y};}
+\draw    (A) to[out=90,in=90] (C);
+\end{tikzpicture}
+\end{equation}
+represent the exact same object. This is a first reason to know which graphs
+are actually the same even if they may appear to be different at first glance.
+
+Another answer to this question lies in the application of graph theory to
+problems of physics. When applying graph theory to the grand canonical partition function in Section \ref{MCE},
 we will encounter sums over graphs. These will only contain topologically distinguishable
 graphs, and a graph of $N$ points will be weighted by a factor of $(N!)\iv$. When only considering
 the graphs in the example above, the sum will contain the expression
@@ -414,44 +427,15 @@ the graphs in the example above, the sum will contain the expression
 \frac 1 {6} 
 &\lt\{
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) -- (B.center);
-  %\node [above left] at (A) {$z$};
-  %\node [above left] at (B) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {1};
-  \node [below right] at (B) {2};
-  \node [below right] at (C) {3};
+  \exgraph{1}{2}{3}
 \end{tikzpicture}
 \rt.+\lt.
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (A.center) -- (C.center);
-  %\node at (.4,.4) {$f$};
-  %\node [above left] at (A) {$z$};
-  %\node [above left] at (B) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {1};
-  \node [below right] at (B) {2};
-  \node [below right] at (C) {3};
+  \exgraph{3}{1}{2}
 \end{tikzpicture}
 +
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
-  \draw(0,0) node[circle,minimum size=.2cm,draw,fill=black] (A) {};
-  \draw(1.3,0) node[circle,minimum size=.2cm,draw,fill=black] (B) {};
-  \draw(.65,1) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
-  \draw (B.center) -- (C.center);
-  %\node at (1.2,.5) {$f$};
-  %\node [above left] at (A) {$z$};
-  %\node at (1.0,.18) {$z$};
-  %\node [above left] at (C) {$z$};
-  \node [below right] at (A) {1};
-  \node [below right] at (B) {2};
-  \node at (.9,.9) {3};
+  \exgraph{2}{3}{1}
 \end{tikzpicture}
 \rt\}\\
 &=\frac 1 2 \lt\{
@@ -470,95 +454,25 @@ the graphs in the example above, the sum will contain the expression
 \end{aligned}
 \label{GraphSym:Bigsum}
 \end{equation}
-The left hand side of \eqref{GraphSym:Bigsum} acould be shortened to a single expression
-because the values of all graphs on the left hand side are the same. The factor
+The left hand side of \eqref{GraphSym:Bigsum} can be shortened to a single
+expression because the values of all graphs on the left hand side are the same. The factor
 $\frac 1 2$ is an important property of the graph \eqref{GraphSym:Fundamental}. It is the
 inverse of the \ep{symmetry number} $s$. The symmetry number is given by the number
 of permutations of graph labels that lead to topologically indistinguishable graphs.
 In our example, this number is $2$ according to \eqref{equivalent graph}. It is easily verified that
 the factor $(N!)\iv$ always reduces to $s\iv$: Assigning labels from $1$ to $N$ to the $N$ field points
 of a graph leads to $N!$ graphs. For every type of topologically distinguishable
-graphs there are $s$ topologically indistinguishable versions. Omitting these leads to a total of
-$\frac {N!} s$ topologically distinguishable graphs. These all have the same value, so if we sum over
-them and divide by $N!$, we can choose any label assignment and multiply it by $\frac 1 {N!} \frac {N!} s = \frac 1 s$.
+graphs there are $s$ topologically indistinguishable versions. Omitting all
+but one of these leads to a total of $\frac {N!} s$ topologically
+distinguishable graphs.
+These all have the same value, so if we sum over them and divide by $N!$, we
+can choose any label assignment and multiply it by $\mbox{\frac 1 {N!} \frac
+{N!} s = \frac 1 s}$.
 
 The symmetry number is an important property of a graph. Some authors include it
 directly in the basic definition of a graph, thereby distinguishing between
 graphs with labelled field points and graphs with unlabelled field points. We will
 not do so, which leads to different equations. 
-% Just as an example, consider the expression
-% 
-% \begin{equation}
-% \begin{aligned}
-% \int_{\Om^3} &\dr^3\ z(\r_1)z(\r_2)z(\r_3)(1+f(\r_1,\r_2))(1+f(\r_1,\r_3)) \\
-% &=\int_{\Om^3} \dr^3\ z(\r_1)z(\r_2)z(\r_3) \\
-%  &\times \lt[1+f(\r_1,\r_2)+f(\r_1,\r_3)+f(\r_1,\r_2)f(\r_1,\r_3)\rt] \\
-% %&+\qquad \int_{\Om^3} \dr^3 f(\r_1,\r_2))(1+f(\r_1,\r_3))
-% \end{aligned}
-% \end{equation} 
-
-
-
-
-% The above definition is not a uniformly used definition in graph theory. Some authors
-% distinguish between graphs with labelled field points and graphs with unlabelled field points
-% (cf. definitions 3 and 3' of Hiroike & Morita\cite{Hiroike}), leading to equations such as
-% \begin{equation}
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
-%   	\draw (0,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
-%   	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black] (B) {};
-%   	\draw (A.east) -- node[below]{$f$} (B.west); 
-% 	\node [above left] at (A) {$z_1$};
-% 	\node [above left] at (B) {$z_2$};
-% 	\end{tikzpicture}
-% \ =
-% \frac 1 2
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
-%   	\draw (0,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
-%   	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black] (B) {};
-%   	\draw (A.east) -- node[below]{$f$} (B.west); 
-% 	\node [above left] at (A) {$z_1$};
-% 	\node [above left] at (B) {$z_2$};
-% 	\node [below right] at (A) {$\r_1$};
-% 	\node [below right] at (B) {$\r_2$};
-% 	\end{tikzpicture}.
-% \label{nolabel:label:1}
-% \end{equation}
-% We chose not to follow this convention. This is in agreement with Wertheim \cite{Wertheim1}. It
-% also seems more intuitive to not distinguish between labelled and unlabelled integration
-% variables since from a mathematical standpoint, the result of an integration is
-% entirely independent of the name of the integration variables as long as they are unique and well-defined.
-% 
-% So, our version of \eqref{nolabel:label:1} is simply
-% \begin{equation}
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
-%   	\draw (0,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
-%   	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black] (B) {};
-%   	\draw (A.east) -- node[below]{$f$} (B.west); 
-% 	\node [above left] at (A) {$z_1$};
-% 	\node [above left] at (B) {$z_2$};
-% 	\end{tikzpicture}
-% \ =
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]%current bounding box.center
-%   	\draw (0,0) node[circle,minimum size=0.2cm,draw,fill=black] (A) {};
-%   	\draw (1.5,0) node[circle,minimum size=0.2cm,draw,fill=black] (B) {};
-%   	\draw (A.east) -- node[below]{$f$} (B.west); 
-% 	\node [above left] at (A) {$z_1$};
-% 	\node [above left] at (B) {$z_2$};
-% 	\node [below right] at (A) {$\r_1$};
-% 	\node [below right] at (B) {$\r_2$};
-% 	\end{tikzpicture}.
-% \label{nolabel:label:2}
-% \end{equation}
-% The difference between \eqref{nolabel:label:1} and \eqref{nolabel:label:2} is the factor $\frac 1 2$,
-% which is the \ep{symmetry number s} of the graph. It is defined as the number of possible
-% permutations of graph field point labels which do not change the topology of the graph. Two graphs
-% have the same topology if field points with the same label $i$ carry the same
-% properties and pairs of points with labels $i$ and $j$ are linked by the same bonds in both graphs.
-% 
-% Obviously, for a graph with $N$ field points $1 \le s \le N!$. In the example of \eqref{nolabel:label:1},
-% the identity and the permutation of labels 1 and 2 results in two topologically indistinguishable graphs,
-% so the symmetry number is $s=2$. We will explore the usefulness of symmetry numbers in the next section.
 
 \subsection{Derivatives of Graphs}
 
@@ -675,12 +589,14 @@ by symmetry numbers yields a useful lemma, which we will give without a prove.
 %In conclusion, we give the following Lemma without a prove:
 
 \begin{lem}
-Let $\zi$, $\zip$ be properties and let $\Ga$ be a graph and let the set $\st{\Ga_\al}_{1\le\al\le m}$ be the set
-of all topologically distinguishable graphs obtainable from $\Ga$ by turning one field point with property
-$\zi$ into a labelled point with property $\zip$. Let $s$ be the symmetry number of $\Ga$ and let the set
-$\st{s_\al}_{1\le\al\le m}$ be the set of symmetry numbers corresponding to $\st{\Ga_\al}$. Then
+Let $\zi$, $\zip$ be properties and let $\Ga$ be a graph and let the set
+$\st{\Ga_\al(\r)}_{1\le\al\le m}$ be the set of all topologically
+distinguishable graphs obtainable from $\Ga$ by turning one field point with
+property $\zi$ into a labelled point depending on $\r$ with property $\zip$. Let
+$s$ be the symmetry number of $\Ga$ and let the set $\st{s_\al}_{1\le\al\le m}$
+be the set of symmetry numbers corresponding to $\st{\Ga_\al(\r)}$. Then
 \begin{equation}
-\zip(\r)\delti{}{\zi(\r)} s\iv\ \Ga = \sum_{\al=1}^m s_\al\iv\ \Ga_\al.
+\zip(\r)\delti{}{\zi(\r)} s\iv\ \Ga = \sum_{\al=1}^m s_\al\iv\ \Ga_\al(\r).
 \end{equation}
 \label{funcderi2}
 \end{lem}
@@ -1533,7 +1449,7 @@ we described in Section \ref{ArtPoint} and change the property of the field poin
 to $\rho(1)$. Then, we can express $c(1)$ by
 \begin{equation}
 \begin{aligned}
-c(1)&=
+c(1)=& 1 
 \begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
   \draw(0,0) node[circle,minimum size=.2cm,dashed,draw] (A) {};
   \draw(.7,0) node[circle,minimum size=.2cm,draw,fill=blue, opacity=1] (B) {};
@@ -1586,8 +1502,8 @@ c(1)&=
 \end{pgfonlayer}
   \node [below right] at (A) {1};
 \end{tikzpicture}
-\\&
-\ \ \ \ \ +
+\\
++&
 \frac 1 2
  \begin{tikzpicture}[baseline=.25cm]
   \draw(0,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (A) {};
@@ -1622,11 +1538,11 @@ c(1)&=
 +
 \ldots 
 \\
-&=\{\te{Sum of all graphs with one labelled point 1,}\\
-&\ \ \ \ \ N_\rho\ge 1\ \rho\te{ field points connected by } f \te{-bonds}\\
-&\ \ \ \ \ \te{such that none of the points is an articulation}\\
-&\ \ \ \ \ \te{point. The graphs are weighted by the correct}\\
-&\ \ \ \ \ \te{symmetry numbers 1/s.}\}
+=&\{\te{Sum of all graphs with one labelled point 1,}\\
+&\ N_\rho\ge 1\ \rho\te{ field points connected by } f \te{-bonds}\\
+&\ \te{such that none of the points is an articulation}\\
+&\ \te{point. The graphs are weighted by the correct}\\
+&\ \te{symmetry numbers 1/s.}\}
 %\\
 %&=\{\mbox{\parbox{Let's try to have fun with a lot of text in this mbox which does not break shit}}\}
 \end{aligned}
@@ -1807,24 +1723,37 @@ graphs. However, we can define the \ep{Ursell functions}
 \begin{equation}
 \uos:=\prod_{i=1}^s z(i) \frac{\dl^s \ln \Xi}{\prod_{i=1}^s \dl z(i)}
 \end{equation}
-that are in close relation to $\ros$. Obviously,
+that are in close relation to $\ros$. We can investigate this relation by
+defining for $s \ge 2$ the \ep{correlation functions}
+\newcommand\g{g(12)}
+\renewcommand\h{h(12)}
+\begin{equation}
+h(1\cdots s)=\frac{\uos}{\rho(1)\cdots\rho(s)}
+\end{equation}
+and
+\begin{equation}
+g(1\cdots s)=\frac{\ros}{\rho(1)\cdots\rho(s)}.
+\end{equation}
+In the special case of $s=1$, we already met the function $h(1)$, which is the
+same as $c(1)$ in \eqref{TopRed:cDefi}. We can now consider the relationship
+between the $\uos$ functions and the $\ros$ functions, starting with the obvious
+case of
 \begin{equation}
 u(1)=\rho(1).
 %u^{(1)}(1)=\rho(1).
 \end{equation}
-And also
-\newcommand\ut{u(12)}
-\newcommand\rot{\rho(12)}
-\newcommand\g{g(12)}
-\renewcommand\h{h(12)}
+For $s=2$, we find
 % \newcommand\ut{u^{(2)}(12)}
 % \newcommand\rot{\rho^{(2)}(12)}
+\newcommand\ut{u(12)}
+\newcommand\rot{\rho(12)}
 \begin{equation}
 \begin{aligned}
 \ut=&z(1)z(2)\frac\dl{z(2)} \frac 1 \Xi \deri{\Xi}{z(1)}\\
 =&z(1)z(2)\ed{\frac 1 \Xi \frac{\dl^2 \Xi}{\dl z(1) \dl z(2)} - \frac 1 {\Xi^2} \deri{\Xi}{z(1)} \deri{\Xi}{z(2)}}\\
 =&\rot - \rho(1)\rho(2).
 \end{aligned}
+\label{sPart:UByRho}
 \end{equation}
 It becomes evident that by an analogous procedure any $\ros$ can be described by $u(1\cdots r)$ with $r\le s$.
 Since the $\uos$ are all sums of graphs obtained from $\ln \Xi$ by turning $s$ field points into labelled points,
@@ -1974,45 +1903,233 @@ with the example of the two-particle correlation functions $\g$ and $\h$. Let us
 % \end{tikzpicture}
 \end{aligned}
 \end{equation} 
-
-%, \qquad u^{(2)}(12)=\rho^{(2)}(12)-\rho(1)\rho(2).
-
-------------------
-
-The approach presented here
-is rather general, since we have not committed to any forms of the interaction potential $\phi(12)$.
-Of course, when choosing a specific class of $\phi(12)$, it may be advisable to also undertake variations
-to the process of graph reduction we outlined in this section. One of these variations was presented by M. S.
-Wertheim in 1983 \cite{Wertheim1}, and the following section will describe its main ideas.  
+We can see that any graph in $\ut$ can be constructed from a subgraph in which
+none of the labelled points is an articulation point (the field points may
+still be articulation points) and a graph from $\rho(1)$ appended to the point 
+1 and similarly for the point 2. Note that the subgraph is thus unique. The sum
+over all these subgraphs is the correlation function $\h$, given by
+\renewcommand\twoart{
+  \draw(0,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (A) {};
+  \draw(.7,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (B) {};
+  \node at (.23,-.17) {\footnotesize 1};
+  \node at (.93,-.17) {\footnotesize 2};
+}
+\renewcommand\threeart{
+\begin{pgfonlayer}{main}
+  \twoart
+  \draw(.35,.7) node[circle,minimum size=.2cm,fill=black,draw] (C) {};
+\end{pgfonlayer}
+}
+\renewcommand\fourart{
+\begin{pgfonlayer}{main}
+  \twoart
+  \draw(.7,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
+  \draw(0,.7) node[circle,minimum size=.2cm,draw,fill=black] (D) {};
+\end{pgfonlayer}
+}
+\begin{equation}
+\begin{aligned}
+\h=&
+\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
+  \twoart
+  \draw (A.east) --  (B.west);
+\end{tikzpicture}
++
+\begin{tikzpicture}[baseline=.25cm]
+\threeart
+\begin{pgfonlayer}{background}
+  \draw (A.center) --  (C.center);
+  \draw (B.center) --  (C.center);
+\end{pgfonlayer}
+\end{tikzpicture} 
++
+\begin{tikzpicture}[baseline=.25cm]
+\threeart
+\begin{pgfonlayer}{background}
+  \draw (A.center) --  (B.center);
+  \draw (A.center) --  (C.center);
+  \draw (B.center) --  (C.center);
+\end{pgfonlayer}
+\end{tikzpicture}\\
+ +&
+ \begin{tikzpicture}[baseline=.25cm]
+  \fourart
+\begin{pgfonlayer}{background}
+  \draw (A.center) --  (B.center);
+  \draw (B.center) --  (C.center);
+  \draw (C.center) --  (D.center);
+  \draw (D.center) --  (A.center);
+\end{pgfonlayer}
+\end{tikzpicture}
++
+\begin{tikzpicture}[baseline=.25cm]
+  \fourart
+\begin{pgfonlayer}{background}
+  \draw (B.center) --  (C.center);
+  \draw (C.center) --  (D.center);
+  \draw (D.center) --  (A.center);
+\end{pgfonlayer}
+\end{tikzpicture}
++ \ldots\\
+=&\{\te{Sum of all connected graphs consisting of} \\
+&\phantom{\{}\te{labelled points } 1 \te{ and } 2 \te{, $z$-field points and} \\
+&\phantom{\{}\te{$f$-bonds. No labelled point is an articulation}\\
+&\phantom{\{}\te{point.}\}
+\end{aligned}
+\label{sPoint:h}
+\end{equation}
+where dashed points are again points without property. Alongside \eqref{sPart:UByRho}, this leads to
+\begin{equation}
+\rot=\rho(1)\h\rho(2)+\rho(1)\rho(2)=\rho(1)\g\rho(2).
+\end{equation} 
+Here, $g$ is simply
+\begin{equation}
+\g=\h+1.
+\end{equation} 
+1 is also the value of the graph containing two unbonded labelled points without property. If we add it
+to \eqref{sPoint:h}, we see that for any graph in $\g$ where there is an $f$-bond between the labelled
+points, there is also a graph in $\g$ where there is no bond between the two, and vice versa. The sum
+of an $f$-bond and no bond is an $e$-bond. We can therefore write
+\renewcommand\twoart{
+  \draw(0,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (A) {};
+  \draw(.7,0) node[circle,minimum size=.2cm,dashed,fill=white,draw] (B) {};
+  \node at (.23,-.17) {\footnotesize 1};
+  \node at (.93,-.17) {\footnotesize 2};
+  \draw (A.east) -- (B.west) [dashed];
+}
+%\renewcommand\threeart{
+%\begin{pgfonlayer}{main}
+%  \twoart
+%  \draw(.35,.7) node[circle,minimum size=.2cm,fill=black,draw] (C) {};
+%\end{pgfonlayer}
+%}
+%\renewcommand\fourart{
+%\begin{pgfonlayer}{main}
+%  \twoart
+%  \draw(.7,.7) node[circle,minimum size=.2cm,draw,fill=black] (C) {};
+%  \draw(0,.7) node[circle,minimum size=.2cm,draw,fill=black] (D) {};
+%\end{pgfonlayer}
+%}
+\begin{equation}
+\begin{aligned}
+\g=&
+\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
+  \twoart
+\end{tikzpicture}
++
+\begin{tikzpicture}[baseline=.25cm]
+\threeart
+\begin{pgfonlayer}{background}
+  \draw (A.center) --  (C.center);
+  \draw (B.center) --  (C.center);
+\end{pgfonlayer}
+\end{tikzpicture} 
++
+\begin{tikzpicture}[baseline=.25cm]
+  \fourart
+\begin{pgfonlayer}{background}
+  \draw (B.center) --  (C.center);
+  \draw (C.center) --  (D.center);
+  \draw (D.center) --  (A.center);
+\end{pgfonlayer}
+\end{tikzpicture}
++ \ldots \\
+=&\{\te{Sum of all connected graphs consisting of} \\
+&\phantom{\{}\te{labelled points } 1 \te{ and } 2 \te{ connected by an } \\
+&\phantom{\{}e\te{-bond and a network of }z\te{ field points and}\\
+&\phantom{\{}\te{$f$-bonds. No labelled point is an articulation}\\
+&\phantom{\{}\te{point.}\}
+\end{aligned}
+\label{sPoint:g}
+\end{equation}
+It is possible to further reduce $\g$ by the same arguments we used to reduce $c(1)$. Since the field
+points may still be articulation points, the sum in $\g$ contains maximal articulation point free subgraphs
+and all graphs resulting from appending some graph of $\rho(1)$ to each field point. We can therefore replace
+$z$ field points by $\rho$ field points in \eqref{sPoint:g}, arriving at
+\renewcommand\threeart{
+\begin{pgfonlayer}{main}
+  \twoart
+  \draw(.35,.7) node[circle,minimum size=.2cm,fill=blue,draw] (C) {};
+\end{pgfonlayer}
+}
+\renewcommand\fourart{
+\begin{pgfonlayer}{main}
+  \twoart
+  \draw(.7,.7) node[circle,minimum size=.2cm,draw,fill=blue] (C) {};
+  \draw(0,.7) node[circle,minimum size=.2cm,draw,fill=blue] (D) {};
+\end{pgfonlayer}
+}
+\begin{equation}
+\begin{aligned}
+\g=&
+\begin{tikzpicture}[baseline=-.1cm]%{([yshift=-.3em]current bounding box.center)}]
+  \twoart
+\end{tikzpicture}
++
+\begin{tikzpicture}[baseline=.25cm]
+\threeart
+\begin{pgfonlayer}{background}
+  \draw (A.center) --  (C.center);
+  \draw (B.center) --  (C.center);
+\end{pgfonlayer}
+\end{tikzpicture} 
++
+\begin{tikzpicture}[baseline=.25cm]
+  \fourart
+\begin{pgfonlayer}{background}
+  \draw (B.center) --  (C.center);
+  \draw (C.center) --  (D.center);
+  \draw (D.center) --  (A.center);
+\end{pgfonlayer}
+\end{tikzpicture}
++ \ldots \\
+=&\{\te{Sum of all at least doubly connected graphs} \\
+&\phantom{\{}\te{consisting of labelled points } 1 \te{ and  $2$ connec-} \\
+&\phantom{\{}\te{ted by an }e\te{-bond and a network of $\rho$ field} \\
+&\phantom{\{}\te{points and $f$-bonds.\}}
+\end{aligned}
+\label{sPoint:gbyrho}
+\end{equation}
+This concludes the remarks on correlation functions for now.
 
 \section{Wertheim's Multiple Density Formalism}
 \label{WH}
+The approach presented in the previous section is rather general, since we have
+not committed to any forms of the interaction potential $\phi(12)$. Of course, when
+choosing a specific class of $\phi(12)$, it may be advisable to also undertake
+variations to the process of graph reduction. One of these variations was
+presented by M. S. Wertheim in 1983 \cite{Wertheim1}, and this section will
+describe its main ideas.
+
+Most of what follows is part of Wertheim's first paper on the topic
+\cite{Wertheim1}, which we will simply call I or Wertheim I. We also consider
+his generalization presented in III \cite{Wertheim3}. The two other subsequent
+publications II \cite{Wertheim2} and IV \cite{Wertheim4} will only be briefly
+visited. Wertheim submitted an additional paper on thermodynamic perturbation
+theory \cite{WertheimTPT}, which we will especially consider in the next
+section. We will refer to it by (Wertheim) TPT.
+
 \subsection{Revisiting the Fundamentals}
 \label{WH:RevFunda}
-Most of what follows is part of Wertheim's first paper on the topic \cite{Wertheim1}, which we will simply call I.
-The three subsequent publications II \cite{Wertheim2}, III \cite{Wertheim3} and IV \cite{Wertheim4} will only
-be briefly visited. Wertheim submitted an additional paper on thermodynamic perturbation theory \cite{WertheimTPT},
-which we will especially consider in the next section. We will refer to it by V. Since the papers III and IV are
-generalizations to the papers I and II that go beyond the limit of complexity within the scope of this summary,
-we will not discuss their technical details but only give remarks on the way they generalize the results of I and II.
 
-As we mentioned at the end of the last section, the Mayer Cluster Expansion in its generality may not be
-the most adequate way to treat special forms of the interaction potential $\phi(12)$. The form Wertheim
-chose to analyze is
+As we mentioned at the end of the last section, the Mayer Cluster Expansion in
+its generality may not be the most adequate way to treat special forms of the
+interaction potential $\phi(12)$. The form Wertheim chose to analyze is
 \begin{equation}
 \phi(12)=\phi_R(12)+\sum_{A,B} \phi_{AB}(\abs{\r_2+\bo d_\be(\Om_2)-\r_1-\bo d_\al(\Om_1)}).
 \label{WH:phi12}
 \end{equation}  
-$\al$ and $\be$ are labels for interaction sites on each particle, the position of which is described
-by $\bo d(\Om_i)$, dependent on the orientation $\Om_i$ of each particle. The potentials $\pab$ are
-considered to be purely attractive, that is
+$\al$ and $\be$ are labels for interaction sites on each particle, the position
+of which is described by $\bo d(\Om_i)$, dependent on the orientation $\Om_i$
+of each particle. The potentials $\pab$ are considered to be purely attractive,
+that is
 \begin{equation}
 \pab \le 0 \qquad \forall\ A, B.
 \label{WH:pabAttractive}
 \end{equation} 
-The rest of the interaction is purely repulsive, preferably strong enough to make a lot of
-graphs vanish later in the expansion. A classical example is the \ep{hard sphere potential}
-$\phi_R^{HS}$, which strictly forbids core overlap by
+The rest of the interaction is purely repulsive, preferably strong enough to
+make a lot of graphs vanish later in the expansion. A classical example is the
+\ep{hard sphere potential} $\phi_R^{HS}$, which strictly forbids core overlap by
 \begin{equation}
 \phi_R^{HS}(12)=\begin{cases}
 \infty, &r_{12} \le D, \\
@@ -2465,13 +2582,26 @@ with some explanatory graphs. We can draw a point with 2 sites by
   \draw(0,0) node[circle,minimum size=1.5cm,fill=white,draw] (1) {};
   \draw(0,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1A) {};
   \draw(0,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1B) {.};
+  \node at (.75,-.75) {1};
 %  \node [below right] at (1A) {A};
 %  \node [below right] at (1B) {B};
 \end{tikzpicture}
+\qquad \te{or} \qquad
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+  \draw(0,0) node[circle,minimum size=1.5cm,fill=black,draw] (1) {};
+  \draw(0,0) node[circle,minimum size=1.3cm,fill=white,draw] (1) {};
+  \draw(0,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1A) {};
+  \draw(0,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1B) {.};
+%  \node [below right] at (1A) {A};
+%  \node [below right] at (1B) {B};
+\end{tikzpicture}
+\label{WH:hyperpoint}
 \end{equation}
 Adopting Wertheim's definition, we call the big circle a \ep{hyperpoint} and the small
-black circles are the sites. If not stated otherwise, the hyperpoint is a field point
-despite it not being filled black. It has to be made clear beforehand which site is which.
+black circles are the sites. We will additionally introduce the convention that
+a hyperpoint with a thick circle line is a field hyperpoint (right point in
+\eqref{WH:hyperpoint}) while a thin circle means a labelled hyperpoint (left
+point in \eqref{WH:hyperpoint}).
 
 Now, consider how the following graphs differ in connection:
 \begin{subequations}
@@ -2905,6 +3035,8 @@ where we inserted the result for $Q(1)$ with two sites and \eqref{TPT:noselfie}.
 quantity of interest is
 \newcommand\chs{\enmat{\cze_{R}}}
 \newcommand\dc{\enmat{\Dl\cze}}
+\newcommand\dcs{\enmat{\dc[s]}}
+\newcommand\dct{\enmat{\dc[2]}}
 \begin{equation}
 \dc=\cze-\chs.
 \end{equation}
@@ -2912,84 +3044,158 @@ $\chs$ is the graph sum we defined in \eqref{TopRed:czeGraph}. The $\Dl\cze$ is 
 graphs in $\cze$ not purely interacting by repulsion. Equation \eqref{TPT:excessP} contains
 three unknowns, $\siz$, $\si_A$ and $\si_B$ along with $\dc$, which is itself a function
 of the latter. This function contains infinite sums of graphs, so we are not able to obtain
-results without simplifications. To that end, let us have a look at the first graphs
-in $\dc$
-%% CHECK: better idea: first graphs with an attraction bond between only two points.
-\newcommand\twograph[2]{
-  \draw(0,0) node[circle,minimum size=.8cm,fill=white,draw] (1) {};
-  \draw(0,.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1A) {};
-  \draw(0,-.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1B) {.};
-  \node at (.5,-.5) {#1};
-  \draw(1.5,0) node[circle,minimum size=.8cm,fill=white,draw] (2) {};
-  \draw(1.5,.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
-  \draw(1.5,-.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
-  \node at (2.0,-.5) {#2};
+results without simplifications. To that end, let us group the graphs in $\dc$
+hierarchically. If we only consider graphs with one $s$-mer with $s\ge2$, we can
+isolate all graphs containing a dimer, trimer etc. We call these subclasses
+$\kappa_s$. Let us look at the dimer case, where we find
+%% CHECK: better idea: first graphs with an attraction bond between only two
+% points.
+\newcommand\Hyperpoint[3]{
+  \coordinate (L) at (-.5,.5); %Label position
+  \coordinate (AB) at (0,.15); %site AB position
+\draw#1 node[circle,minimum size=.8cm,fill=black,draw] (#2) {};
+\draw#1 node[circle,minimum size=.7cm,fill=white,draw] (#2) {};
+\draw($(#2)+(AB)$) node[circle,inner sep=0cm,minimum
+ size=.1cm,fill=black,draw] (#2A) {};
+\draw($(#2)-(AB)$) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw]
+(#2B) {.};
+  \node at ($(#2)+(L)$) {#3};
+}
+\newcommand\LHyperpoint[4]{
+  \coordinate (L) at (-.5,.5); %Label position
+  \coordinate (AB) at (0,.15); %site AB position
+\draw#1 node[circle,minimum size=.8cm,fill=white,draw] (#2) {};
+\draw($(#2)+(AB)$) node[circle,inner sep=0cm,minimum
+ size=.1cm,fill=black,draw] (#2A) {};
+\draw($(#2)-(AB)$) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw]
+(#2B) {.};
+  \node at ($(#2)+(L)$) {#3};
+  \node at ($(#2)-(L)$) {#4};
+}
+ \newcommand\twograph[2]{
+  \Hyperpoint{(0,0)}{1}{#1}
+  \Hyperpoint{(1.5,0)}{2}{#2}
+  \draw (1B.center) --  (2A.center);
+\begin{pgfonlayer}{background}
+  \draw (1.center) --  (2.center) [dashed];
+\end{pgfonlayer}
 }
 \newcommand\threegraph[3]{
-  \draw(0,0) node[circle,minimum size=.8cm,fill=white,draw] (1) {};
-  \draw(0,.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1A) {};
-  \draw(0,-.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (1B) {.};
-  \node at (.5,-.5) {#1};
-  \draw(1.5,0) node[circle,minimum size=.8cm,fill=white,draw] (2) {};
-  \draw(1.5,.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
-  \draw(1.5,-.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
-  \node at (2.0,-.5) {#2};
-  \draw(.75,1.3) node[circle,minimum size=.8cm,fill=white,draw] (3) {};
-  \draw(.75,1.45) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (3A) {};
-  \draw(.75,1.15) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (3B) {.};
-  \node at (1.25,.8) {#3};
+  \twograph{#1}{#2}
+  \Hyperpoint{(.75,1.45)}{3}{#3}
 }
-\begin{equation}
+\newcommand\fourgraph[4]{
+  \twograph{#1}{#2}
+  \Hyperpoint{(0,1.5)}{3}{#3}
+  \Hyperpoint{(1.5,1.5)}{4}{#4}
+  }
+\newcommand\connect[1]{
+\begin{pgfonlayer}{background}
+ \foreach \x/\y in {#1} {\draw (\x.center) -- (\y.center);}
+\end{pgfonlayer}
+}
+\begin{eqnarray}
 \begin{aligned}
-\dc=&
+\kappa_2&=&
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \twograph{$\si_A$}{$\si_B$} %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
-  %\draw(3,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
-  %\draw(3,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
-  \draw (1B.center) --  (2A.center);
-\begin{pgfonlayer}{background}
-  \draw (1.center) --  (2.center) [dashed];
-\end{pgfonlayer}
 \end{tikzpicture}
-+
-\begin{tikzpicture}[baseline={(current bounding box.center)}]
-\threegraph{$\si_0$}{$\si_B$}{$\si_A$}
-  %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
-  %\draw(3,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
-  %\draw(3,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
-  \draw (1B.center) --  (2A.center);
-  \draw (1A.center) --  (3B.center);
-\begin{pgfonlayer}{background}
-  \draw (1.center) --  (2.center) [dashed];
-  \draw (1.center) --  (3.center) [dashed];
-\end{pgfonlayer}
-\end{tikzpicture}
-\\
-&+
-\begin{tikzpicture}[baseline={(current bounding box.center)}]
-\threegraph{$\si_0$}{$\si_B$}{$\si_A$}
-  \draw (1B.center) --  (2A.center);
-  \draw (1A.center) --  (3B.center);
-\begin{pgfonlayer}{background}
-  \draw (1.center) --  (2.center) [dashed];
-  \draw (1.center) --  (3.center) [dashed];
-  \draw (2.center) --  (3.center);
-\end{pgfonlayer}
-\end{tikzpicture}
-+
+&+&
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \threegraph{$\si_A$}{$\si_B$}{$\si_\Ga$}
-  \draw (1B.center) --  (2A.center);
-\begin{pgfonlayer}{background}
-  \draw (1.center) --  (2.center) [dashed];
-  \draw (1.center) --  (3.center);
-  \draw (2.center) --  (3.center);
-\end{pgfonlayer}
+\connect{1/3,2/3} 
 \end{tikzpicture}
 \\
-&+\ldots
+&+&
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
+\connect{1/3,3/4,4/2} 
+\end{tikzpicture}
+&+&
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
+\connect{1/3,3/4,4/2,1/4} 
+\end{tikzpicture}
+\\
+&+\frac 1 2&
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
+\connect{1/3,3/4,4/2,1/4,2/3}
+\end{tikzpicture}
+&+\frac 1 2&
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+\fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
+\connect{1/3,4/2,1/4,2/3}
+\end{tikzpicture}
+\\
+&+&\ldots&
+\end{aligned}
+\end{eqnarray}
+We can compare this result to what we found for the hard sphere correlation
+function $\g$ in \eqref{sPoint:gbyrho}, then we have
+\begin{equation}
+\begin{aligned}
+\kappa_2=&\int\di(1)\di(2)\ 
+\begin{tikzpicture}[baseline={(current bounding box.center)}]
+  \LHyperpoint{(0,0)}{1}{$\si_A$}{1}
+  \LHyperpoint{(1.5,0)}{2}{$\si_B$}{2}
+  \draw (1B.center) --  (2A.center);
+\end{tikzpicture}
+\times \g\\
+=&\int\di(1)\di(2)\ \si_A(1)\fab(12)\si_B(2)\g
 \end{aligned}
 \end{equation}
+% \begin{equation}
+% \begin{aligned}
+% \dc=&
+% \begin{tikzpicture}[baseline={(current bounding box.center)}]
+% \twograph{$\si_A$}{$\si_B$} %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
+%   %\draw(3,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
+%   %\draw(3,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
+%   \draw (1B.center) --  (2A.center);
+% \begin{pgfonlayer}{background}
+%   \draw (1.center) --  (2.center) [dashed];
+% \end{pgfonlayer}
+% \end{tikzpicture}
+% +
+% \begin{tikzpicture}[baseline={(current bounding box.center)}]
+% \threegraph{$\si_0$}{$\si_B$}{$\si_A$}
+%   %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
+%   %\draw(3,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
+%   %\draw(3,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
+%   \draw (1B.center) --  (2A.center);
+%   \draw (1A.center) --  (3B.center);
+% \begin{pgfonlayer}{background}
+%   \draw (1.center) --  (2.center) [dashed];
+%   \draw (1.center) --  (3.center) [dashed];
+% \end{pgfonlayer}
+% \end{tikzpicture}
+% \\
+% &+
+% \begin{tikzpicture}[baseline={(current bounding box.center)}]
+% \threegraph{$\si_0$}{$\si_B$}{$\si_A$}
+%   \draw (1B.center) --  (2A.center);
+%   \draw (1A.center) --  (3B.center);
+% \begin{pgfonlayer}{background}
+%   \draw (1.center) --  (2.center) [dashed];
+%   \draw (1.center) --  (3.center) [dashed];
+%   \draw (2.center) --  (3.center);
+% \end{pgfonlayer}
+% \end{tikzpicture}
+% +
+% \begin{tikzpicture}[baseline={(current bounding box.center)}]
+% \threegraph{$\si_A$}{$\si_B$}{$\si_\Ga$}
+%   \draw (1B.center) --  (2A.center);
+% \begin{pgfonlayer}{background}
+%   \draw (1.center) --  (2.center) [dashed];
+%   \draw (1.center) --  (3.center);
+%   \draw (2.center) --  (3.center);
+% \end{pgfonlayer}
+% \end{tikzpicture}
+% \\
+% &+\ldots
+% \end{aligned}
+% \end{equation}
 
 % Assumptions on which graphs in
 % $\dc$ are non-negligible define the entire system, since
