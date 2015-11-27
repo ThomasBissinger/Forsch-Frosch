@@ -2093,13 +2093,14 @@ As we mentioned at the end of the last section, the Mayer Cluster Expansion in
 its generality may not be the most adequate way to treat special forms of the
 interaction potential $\phi(12)$. The form Wertheim chose to analyze is
 \begin{equation}
-\phi(12)=\phi_R(12)+\sum_{A,B} \phi_{AB}(\abs{\r_2+\bo d_\be(\Om_2)-\r_1-\bo d_\al(\Om_1)}).
+\phi(12)=\phi_R(12)+\sum_{A,B \in \Ga} \phi_{AB}(\abs{\r_2+\bo
+d_B(\Om_2)-\r_1-\bo d_A(\Om_1)}).
 \label{WH:phi12}
 \end{equation}  
-$\al$ and $\be$ are labels for interaction sites on each particle, the position
-of which is described by $\bo d(\Om_i)$, dependent on the orientation $\Om_i$
-of each particle. The potentials $\pab$ are considered to be purely attractive,
-that is
+$A$ and $B$ are labels for interaction sites on each particle and belong to a
+set of sites $\Ga$. The position of $A$ and $B$ is described by $\bo d(\Om_i)$,
+dependent on the orientation $\Om_i$ of each particle. The potentials $\pab$
+are considered to be purely attractive, that is
 \begin{equation}
 \pab \le 0 \qquad \forall\ A, B.
 \label{WH:pabAttractive}
@@ -2119,7 +2120,7 @@ where $D$ is the hard sphere diameter.
 Wertheim I focusses on the case that there is only one interaction site per particle, turning
 \eqref{WH:phi12} into
 \begin{equation}
-\phi(12)=\phi_R(12) + \phi_A(\abs{\r_2+\bo d_\be(\Om_2)-\r_1-\bo d_\al(\Om_1)}).
+\phi(12)=\phi_R(12) + \phi_A(\abs{\r_2+\bo d_A(\Om_2)-\r_1-\bo d_A(\Om_1)}).
 \label{WH:phi12_OneSite}
 \end{equation}
 The binding site $A$ is situated at the edge of the repulsive core. In the hard sphere example,
@@ -2130,10 +2131,11 @@ this may be of the form
 =0 &x>a.
 \end{cases}
 \end{equation}
-The position of the site defined by $\bo d(\Om_i)$ has to be chosen so that the site is within the
-particle but close enough to the edge to avoid that the attractive region is cancelled out by the
-infinite core repulsion. A case of special interest would be short-ranged interaction leading to
-glue spots such that a site can only interact attractively with one other site. In that case,
+The position of the site defined by $\bo d_A(\Om_i)$ has to be chosen to ensure
+that the site is within the particle but close enough to the edge to avoid that
+the attractive region is cancelled out by the infinite core repulsion. A case of
+special interest would be short-ranged interaction leading to glue spots such
+that a site can only interact attractively with one other site. In that case,
 $a$ would have to be much smaller than $D$.
 
 Potentials of the form \eqref{WH:phi12} can obviously be clearly separated into their attractive
@@ -2867,7 +2869,7 @@ we find when including $(B)$ and $(C)$ again
 \end{aligned}
 \end{equation}
 \end{subequations}
-If we ignore and additive constant and properly spell the integrals, this
+If we ignore an additive constant and properly spell the integrals, this
 yields the desired equation
 \newcommand\sigaal{\si_{\Ga-\al}}
 \newcommand\asumgasub{\enmat{\sum_{\al\suseq\Ga}}}
@@ -2952,14 +2954,18 @@ Instead, we are now interested in putting the equations obtained so far straight
 
 \section{Thermodynamic Perturbation Theory}
 \label{TPT}
+\newcommand\sia{\si_A}
+\newcommand\sib{\si_B}
+\newcommand\sig{\si_G}
+\renewcommand\g{g_R(12)}
+\newcommand{\tr}{\bar\rho}
+\renewcommand{\e}{\eta}
 \subsection{TPT Equations for the Multiple Density Approach}
 \label{TPT:intro}
 
 For the following, we will consider a system with the potential \eqref{WH:phi12}
 with only two sites $A$ and $B$ per particle and with the additional condition
 %CHECK: wirklich?
-\newcommand{\tr}{\rho}
-\renewcommand{\e}{\eta}
 \begin{equation}
 \phi_{AA}=\phi_{BB}=0.
 \label{TPT:noselfie}
@@ -2969,6 +2975,15 @@ with the hard sphere diameter $D$. \eqref{TPT:noselfie} ensures that only one un
 of attractive bond $f_{AB}$ can link two particles. Furthermore, the system is in a
 grand canonical ensemble within the volume $V$ at temperature $T$ and density $\rho$.
 We call this system the \ep{real system} and are interested in calculating its pressure $p$. 
+
+We also impose some more constraints to which graphs may be non-vanishing. For
+geometric reasons (i.e. steric incompatibility, cf. Wertheim IV\cite{Wertheim4})
+it is impossible that one site is bonded to more than one other site in a
+different particle. Additionally, there may only be one attraction bond between
+two particles, so we do not allow for any double bonds. These restrictions are
+reasonable for attraction sites not too close to each other, that is with a
+sufficiently large angle between them. We will also ignore rings in our
+considerations.
 
 %% CHECK: sources!
 In TPT, we are interested in systematically approaching the calculation of properties like
@@ -2988,14 +3003,24 @@ expressions for its various properties, we can use it as a \ep{reference system}
 study at hand. It is described by the purely repulsive potential of the reference system
 without any attraction. It has the same particle density $\rho$ and Temperature $T$ as the
 real system. Its pressure $p_R$ can be reasonably well described by the \ep{Carnahan-Starling}
-EOS\cite{CarnahanStarling}
+EOS\cite{CarnahanStarling} for the \ep{compressibility factor} $Z_R$ of the reference system
 \begin{equation}
-\frac{\be p_R}{\tr}=\frac{1+\e+\e^2-\e^3}{\rb{1-\e}^3}
+Z_R:=\frac{\be p_R}{\tr}=\frac{1+\e+\e^2-\e^3}{\rb{1-\e}^3}
+\label{TPT:CSEOS}
 \end{equation}
 with the \ep{packing density}
 \begin{equation}
-\e=\frac 1 6 \pi\tr D^3.
+\e=\frac 1 6 \pi\tr D^3
+\label{TPT:eta}
 \end{equation}
+and
+\begin{equation}
+\tr=\rho \Om,
+\label{TPT:rhobar}
+\end{equation}
+with $\Om$ being the integral over angular orientations of
+the particle. The motivation of choosing this value will arise at a later point.
+
 
 The pressure in the real system is described by \eqref{WH:MultDens:lnXibyQ}, with the  
 Since they both obey \eqref{WH:MultDens:lnXibyQ} (with $Q_R(1)=0$), we can quantify the difference
@@ -3013,7 +3038,6 @@ quantity of interest is
 \newcommand\chs{\enmat{\cze_{R}}}
 \newcommand\dc{\enmat{\Dl\cze}}
 \newcommand\dcs{\enmat{\dc[s]}}
-\newcommand\dct{\enmat{\dc[2]}}
 \begin{equation}
 \dc=\cze-\chs.
 \end{equation}
@@ -3022,9 +3046,23 @@ graphs in $\cze$ not purely interacting by repulsion. Equation \eqref{TPT:excess
 three unknowns, $\siz$, $\si_A$ and $\si_B$ along with $\dc$, which is itself a function
 of the latter. This function contains infinite sums of graphs, so we are not able to obtain
 results without simplifications. To that end, let us group the graphs in $\dc$
-hierarchically. If we only consider graphs with one $s$-mer with $s\ge2$, we can
-isolate all graphs containing a dimer, trimer etc. We call these subclasses
-$\kappa_s$. Let us look at the dimer case, where we find
+hierarchically. To that end, we will from now on only consider the graphs in
+$\dc$ with a single $s$-meric \ep{chain} for $s\ge2$. By chain we mean singly
+and not more than singly connected $s$-mers. Ignoring the graphs with more than one
+chain and possible attractive intraconnection of $s$-mers will not be reasonable
+when self interaction and chain-chain interactions play an important role
+in modelling the fluid. With this approximation, we can isolate all
+remaining graphs containing a dimer, trimer etc. in $\dc$.
+We call these subclasses $\kappa_s$. Obviously,
+
+\newcommand\dct{\dc_{\te{TPT}}}
+\begin{equation}
+\dct=\sum_{s\ge2} \kappa_s.
+\end{equation}
+We wrote $\dct$ to clarify that we will from now on deal with approximations
+as opposed to physically reasonable assumptions. We can truncate the above
+series at some $S$, which we will call the $S-1$-th order of TPT. First order
+TPT only reatains $\kappa_2$, which is
 %% CHECK: better idea: first graphs with an attraction bond between only two
 % points.
 \newcommand\Hyperpoint[3]{
@@ -3066,9 +3104,10 @@ $\kappa_s$. Let us look at the dimer case, where we find
   \Hyperpoint{(0,1.5)}{3}{#3}
   \Hyperpoint{(1.5,1.5)}{4}{#4}
   }
+\newcommand\kt{\kappa_2}
 \begin{eqnarray}
 \begin{aligned}
-\kappa_2&=&
+\kt&=&
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \twograph{$\si_A$}{$\si_B$} %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
 \end{tikzpicture}
@@ -3116,129 +3155,579 @@ function $\g$ in \eqref{sPoint:gbyrho}, then we have
 \times \g\\
 =&\int\di(1)\di(2)\ \si_A(1)\fab(12)\si_B(2)\g
 \end{aligned}
+\label{TPT:k2}
 \end{equation}
-% \begin{equation}
-% \begin{aligned}
-% \dc=&
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]
-% \twograph{$\si_A$}{$\si_B$} %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
-%   %\draw(3,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
-%   %\draw(3,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
-%   \draw (1B.center) --  (2A.center);
-% \begin{pgfonlayer}{background}
-%   \draw (1.center) --  (2.center) [dashed];
-% \end{pgfonlayer}
-% \end{tikzpicture}
-% +
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]
-% \threegraph{$\si_0$}{$\si_B$}{$\si_A$}
-%   %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
-%   %\draw(3,.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2A) {};
-%   %\draw(3,-.3) node[circle,inner sep=0cm,minimum size=.1cm,fill=black,draw] (2B) {.};
-%   \draw (1B.center) --  (2A.center);
-%   \draw (1A.center) --  (3B.center);
-% \begin{pgfonlayer}{background}
-%   \draw (1.center) --  (2.center) [dashed];
-%   \draw (1.center) --  (3.center) [dashed];
-% \end{pgfonlayer}
-% \end{tikzpicture}
-% \\
-% &+
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]
-% \threegraph{$\si_0$}{$\si_B$}{$\si_A$}
-%   \draw (1B.center) --  (2A.center);
-%   \draw (1A.center) --  (3B.center);
-% \begin{pgfonlayer}{background}
-%   \draw (1.center) --  (2.center) [dashed];
-%   \draw (1.center) --  (3.center) [dashed];
-%   \draw (2.center) --  (3.center);
-% \end{pgfonlayer}
-% \end{tikzpicture}
-% +
-% \begin{tikzpicture}[baseline={(current bounding box.center)}]
-% \threegraph{$\si_A$}{$\si_B$}{$\si_\Ga$}
-%   \draw (1B.center) --  (2A.center);
-% \begin{pgfonlayer}{background}
-%   \draw (1.center) --  (2.center) [dashed];
-%   \draw (1.center) --  (3.center);
-%   \draw (2.center) --  (3.center);
-% \end{pgfonlayer}
-% \end{tikzpicture}
-% \\
-% &+\ldots
-% \end{aligned}
-% \end{equation}
-
-% Assumptions on which graphs in
-% $\dc$ are non-negligible define the entire system, since
-% \begin{equation}
-% \begin{aligned}
-% \si_G(1)=\si_0(1)\ed{1+c_G(1)}, \qquad G \in \st{A,B},
-% \end{aligned}
-% \end{equation}
-% and
-% \begin{equation}
-% c_G(1)=\delti{\cze}{\si_{\Ga-G}(1)}=\delti{\dc}{\si_{\Ga-G}(1)}.
-% \end{equation}
------------------------
- 
-Helmholtz free energy $A$ of our system,
-which reduces with the knowledge of the reference Helmholtz free energy $A_R$ to the task of 
-finding the \ep{excess Helmholtz free energy} $A-A_R$ of our system. The reference
-system is just described by the equations we already derived for the Mayer formalism in
-\eqref{TopRed:beA_2}, but in the language of the multiple density formalism:
-
+$\g$ reduces the infinite graph sum $\kt$ to a single graph including a
+$g_R$-bond. Similar arguments can be adjusted to higher order single-$s$-mer
+graph sums. Since we will also treat second order TPT, we will later need
 \begin{equation}
-\be A_R=\inon \siga(1) \ed{\ln\rb{\siga(1)\lath^3} - 1 } - \chs.
-\label{TPT:beA_R}
+\begin{aligned}
+\kappa_3=\int &\di(1)\di(2)\di(3)\ \si_B(1)\si_0(2)\si_A(3)\\
+&\times\fab(12)\fab(23)\ed{g_R(123)-g_R(12)g_R(23)}.
+\end{aligned}
+\label{TPT:k3}
+\end{equation}
+
+In the chain-free approximation, we can also simplify the expression for the
+excess pressure \eqref{TPT:excessP}. Independent of the TPT order, all graphs in
+$\dct$ will only contain exactly one point with property $\si_A$ and one with
+property $\si_B$. Therefore, derivation of $\dct$ with respect to either $\si_A$
+or $\si_B$ will not change the symmetry number and we can recover $\dct$ by
+\begin{equation}
+\dct=\inon \si_B(1) \delti{\dct}{\si_B(1)}.
+\label{TPT:dctbyint}
+\end{equation}
+But since
+\begin{equation}
+\delti{\dct}{\si_B(1)}=c_A(1)=\frac{\si_A(1)-\siz(1)}{\siz(1)},
+\label{TPT:dctbycA}
+\end{equation}
+\eqref{TPT:excessP} reduces to
+\begin{equation}
+\begin{aligned}
+\be \rb{p-p_R}V =& \inon \lt[\vphantom{\frac 1 2}-\siga(1)+\si_A(1)\rt]\\
+&- \inon\siga\delti{\dct}{\siga(1)}.
+\end{aligned}
+\label{TPT:excessP:short}
+\end{equation}
+An analogous formula could be derived when replacing all appearances of $\si_A$
+by $\si_B$.
+
+Before we proceed to establish the first and second order TPT, we will
+motivate the approach we will take. Since we only consider graphs containing
+single chains, $\sia$ and $\sib$ will appear exactly once in each graph of $\ka_s$.
+This will always lead to the mathematical conclusion $\sig:=\sia=\sib$, which is
+also physically sensible: since $\si_A=\roz+\rho_A$, it contains monomers and the density
+of particles that are bonded at $A$. The latter only appear in chains, but every chain
+containing a particle bonded at $A$ must also contain a particle bonded at $B$, and since
+branching is impossible, there is exactly one particle bonded at $A$ and one bonded at $B$.
+Simply put, a chain beginning at an $A$ must and at a $B$. We can therefore
+understand $\rho_G$ as the density of chains and $\sig$ as the density of 
+what we shall call \ep{units}, that is either monomers or chains. We can also use that
+the space-dependency of the functions $\sig$ and $\rho_G$ was only an artifact
+of the auxiliary space-dependency of $z$. Therefore, the integrals in \eqref{TPT:excessP:short}
+are just constant factors and we get
+\begin{equation}
+\begin{aligned}
+\be \rb{p-p_R}V = -\siga V \Om+\si_A V \Om- \siga \inon\delti{\dct}{\siga(1)}.
+\end{aligned}
+\label{TPT:excessP:noint}
+\end{equation}
+$\Om$ is again the integral over all particle orientations. It will appear often, therefore
+we define
+\begin{equation}
+\begin{rcases}
+\bar \rho_\al := \rho_\al \Om\hskip .2cm \\
+\bar \si_\al := \si_\al \Om\hskip .2cm 
+\end{rcases}
+\hskip .2cm \forall \al \in \st{0,A,B,AB}
+\end{equation}
+With the system at hand, we can therefore easily access the compressibility factor
+by
+\renewcommand\si{\bar\sigma}
+\newcommand\siab{\si_{AB}}
+% \renewcommand\sig{\bar\si_G}
+% \renewcommand\sia{\bar\si_A}
+% \renewcommand\sib{\bar\si_B}
+% \renewcommand\siga{\bar\si_{AB}}
+ \newcommand\roa{\bar\rho_{A}}
+ \renewcommand\roz{\bar\rho_{0}}
+ \newcommand\rog{\bar\rho_{G}}
+ \newcommand\rob{\bar\rho_{B}}
+ \newcommand\roab{\bar\rho_{AB}}
+%%CHECK: kick integral?
+\begin{equation}
+\frac{\be(p-p_R)}{\tr}=-1+\frac{\sig}{\tr}-\frac 1 {V} \inon\delti{\dct}{\siga(1)}.
+\label{TPT:excessP:nearlyNu}
+\end{equation}
+When using the values $\si_\al$ instead of $\sigma_\al$, we have to keep in mind their appearance in
+$\ka_s$, which means that the integrals we introduced have to be divided by the correct power
+of $\Om$. This can be viewed as a normalization process, we will use it in the next section.
+
+Now, one quantity of special interest is
+\begin{equation}
+\nu:=\frac\tr\sig=\frac{\siab}\sig.
+\label{TPT:nu}
+\end{equation}
+It is the ratio between the total density and the density of units. This could be understood
+as the mean length of units (the mean chain length) in the system. Therefore, necessarily
+$\nu\ge1$. We can use another ratio, namely the ration between the unit density
+and the monomer density,
+\begin{equation}
+\tau:=\frac{\sig}{\siz}.
+\label{TPT:tau}
+\end{equation}  
+It will be of help in finding the value of $\nu$. First, we need to know
+\begin{equation}
+\begin{aligned}
+\siab=&\roz+\roa+\rob+\roab\\
+=&\roz+\roa+\rob+\roz c_A c_B + \roz c_{AB}\\
+=&\frac 1 \roz\rb{\roz+\roa+\rob+\frac{\roa\rob}{\roz^2}} + \roz c_{AB}\\
+=&\frac 1 \roz\rb{\roz+\roa}\rb{\roz+\rob} + \roz c_{AB}\\
+=&\frac {\sia\sib} \siz + \siz c_{AB}=\frac {\sig^2} \siz + \siz c_{AB}.
+\end{aligned}
+\end{equation}
+This means for the difference
+\begin{equation}
+\begin{aligned}
+\nu-\tau=&\frac{\siab}\sig-\frac\sig\siz
+=\frac{\siz\siab-\sig^2}{\siz\sig}\\
+=&\frac{\siz^2 c_{AB}}{\siz\sig}
+=\frac{\siz c_{AB}}{\sig}==\frac{c_{AB}}{\tau},
+\end{aligned}
+\label{TPT:nu-tau}
+\end{equation}
+while we know for $\tau$ itself
+\begin{equation}
+\begin{aligned}
+\tau=&\frac{\sig}{\siz}=\frac{\roz+\rog}{\roz}\\
+=&1+\frac{\rog}{\roz}=1+c_G.
+\end{aligned}
+\label{TPT:tau=1+c_G}
+\end{equation}
+We found equations for $\nu$ and $\tau$ containing $\sig$ and $\siz$ and simple derivatives
+of $\dct$. The realtionship between $\dct$ and $c_G$ was already explored in \eqref{TPT:dctbyint}
+and \eqref{TPT:dctbycA}. From there, we can conclude by the calculation we just did that
+\begin{equation}
+\begin{aligned}
+\dct=\inon\sig\delti{\dct}{\sig}=&\sig\inon\rb{\tau-1}.
+\end{aligned}
+\end{equation}
+The functional derivative with respect to $\siab$ appearing in \eqref{TPT:excessP:noint}
+can simply be considered to be
+%% CHECK: correct?
+\begin{equation}
+\delti{}{\siab}\inon\rb{\tau-1}=\delti{\rb{\tau-1}}{\siab}.
+\end{equation}
+With all this knowledge, we can rearrange \eqref{TPT:excessP:nearlyNu}
+\begin{equation}
+\frac{\be(p-p_R)}{\tr}=-1+\nu\iv-\sig\deri{\rb{\tau-1}}{\siab}.
+\label{TPT:excessP:final}
+\end{equation}
+We can conclude that solving the equations for $\tau-1$ and $\nu - \tau$ yields
+the desired TPT approximation to the excess pressure or more accurately the
+excess compressibility factor. How they are computed and to what final expressions
+we can get will be explained in the following two examples of first and second order
+TPT.
+
+\subsection{First Order TPT}
+\newcommand\toc{\dc_{\te{TPT1}}}
+Now, we know that
+\begin{equation}
+\toc=\kt.
+\end{equation}
+We can derive $\calp$, $\al\neq\emptyset$, via \eqref{WH:MultDens:calpdiff} to
+be
+\begin{equation}
+\begin{aligned}
+c_A&=\si_A I_1, \\
+c_B&=\si_B I_1, \\
+c_{AB}&=0.
+\end{aligned}
+\end{equation}
+With the integral
+\begin{equation}
+I_1=\frac 1 \Om \int\di(2)\ \fab(12)g_R(12).
+\end{equation}
+We ignore the artificial spatial dependencies of our arguments and treat
+them as constants. By \eqref{WH:ralbyc}, we know about the densities
+\begin{equation}
+\begin{aligned}
+\tr_A&=\roz\si_A I_1, \\
+\tr_B&=\roz\si_B I_1, \\
+\tr_{AB}&=\roz\si_A\si_B I_1^2=\frac {\tr_A\tr_B}{\roz}.
+\end{aligned}
+\end{equation}
+\eqref{WH:si0,siGa} links $\ral$ to $\sal$, leaving us with equations for
+$\si_A$, $\si_B$ and $\si_0$ and the known $\si_{AB}$ and $I_1$,
+\begin{equation}
+\begin{aligned}
+\frac{\si_A-\si_0}{\si_A}&=\si_0 I_1,\\
+\frac{\si_B-\si_0}{\si_B}&=\si_0 I_1,\\
+\si_{AB}\si_0&=\si_A\si_B.
+\end{aligned}
+\label{TPT1:sigmas}
+\end{equation}
+The first two of these lead to the identity
+\begin{equation}
+1-\frac{\si_0}{\si_A}=1-\frac{\si_0}{\si_B} \iff \si_A=\si_B=:\sig,
+\end{equation}
+which we already discussed.
+
+The only remaining unknowns are now $\siz$ and $\sig$. To proceed, we now
+introduce $\nu$ and $\tau$. We can use \eqref{TPT1:sigmas} to calculate for TPT1
+\begin{equation}
+\begin{aligned}
+%\tau&=\frac{\frac{\si_G^2}{\siz}-\siz}{\si_G-\siz}=\frac{\si_G^2-\siz^2}{\siz(\si_G-\siz)}=\frac{\sig+\siz}{\siz},\\
+\nu&=\frac{\si_G^2}{\siz\si_G}=\frac{\si_G}{\siz}=\tau,
+\end{aligned}
+\label{TPT1:taunu}
+\end{equation}
+in agreement with \eqref{TPT:nu-tau},
+\begin{equation}
+\nu-\tau=\frac{\siz c_{AB}}{\sig}=0.
+\end{equation}
+We are left with the single unknown quantity $\nu$. We can reexpress
+$\siz$ and $\sig$ by $\nu$ and $\tr$ with \eqref{TPT:nu} and \eqref{TPT1:taunu}
+\begin{equation}
+\begin{aligned}
+\sig&=\tr\nu\iv, \\
+\siz&=\sig\nu\iv=\tr\nu^{-2}.
+\end{aligned}
+\end{equation}
+We can make insertions in one of the first two equations of \eqref{TPT1:sigmas}
+to obtain
+\begin{equation}
+1-\nu\iv=\tr\nu^{-2}I_1.
+\end{equation}
+This equation has two solutions, of which we drop the negative one to arrive at
+\begin{equation}
+\nu=\frac 1 2 + \sqrt{\frac 1 4 + \tr I_1}.
+\end{equation}
+While this equation is in principle useful to determine $\nu$ from a given system,
+it will not be used here. The reason is that $\nu$ can be easily given as a parameter
+to a simulation, which is not that simple for the value of the integral $I_1$,
+which depends for a given reference system on the function $\fab$. So, treating
+$\nu$ as a given variable, we can use \eqref{TPT:tau=1+c_G} to reduce \eqref{TPT:excessP:final}
+to
+\begin{equation}
+\begin{aligned}
+\frac{\be(p-p_R)}{\tr}=-1+\nu\iv-\sig^2I_1'.
+\end{aligned}
+\end{equation}
+which is now only dependent on $I_1'$, $\nu$ and $\tr$. The prime denotes
+differntiation of $I_1$ with respect to $\tr$. An important case is
+rigid chain formation (Wertheim calls this the \ep{glue spot limit}), where
+$f_{AB}$ is just a constant times a $\dl$ peak centered at some point at the particle's
+boundary and therefore
+\begin{equation}
+I_1=\frac 1 \Om \int\di(2) K \dl(2-\ed{\r_1+\bo d(\Om_1)}) g(2)=K g(D).
+\label{TPT1:glueI}
+\end{equation}
+An equation ignoring this constant is desirable. And since
+\begin{equation}
+\begin{aligned}
+\rb{1-\nu\iv}\tr=&\tr-\sig=\tr_G+\tr_{AB}=\sig\roz I_1+\frac{\tr_G^2}\roz I_1 \\
+=&\sig\rb{\roz+\tr_G}I_1=\sig^2I_1,
+\end{aligned}
 \end{equation} 
-$\chs$ is the graph sum we defined in \eqref{TopRed:czeGraph}. Instead of also using
-the corresponding result \eqref{TopRed:lnxi final} for the reference EOS, we rather
+we can write
+\begin{equation}
+\frac{\be(p-p_R)}\tr=\rb{-1+\nu\iv}\rb{1+\tr\frac{I_1'}{I_1}}.
+\end{equation}
+Since the Carnahan-Starling EOS depends on $\eta$ instead of $\tr$, we are more
+interested in an equation also depending on $\eta$. By \eqref{TPT:eta},
+the variables are linearly dependent, therefore we get
+\begin{equation}
+\frac{\be(p-p_R)}\tr=\rb{-1+\nu\iv}\rb{1+\eta\frac{I_1'}{I_1}},
+\end{equation}
+where the prime now denotes differentiation with respect to $\eta$. In the glue spot
+limit, we can use
+\begin{equation}
+g(D)=\frac{1-\frac 1 2 \eta}{\rb{1-\eta}^3},
+\end{equation}
+which means alongside \eqref{TPT1:glueI} that
+\begin{equation}
+\frac{\be(p-p_R)}\tr=\rb{-1+\nu\iv}\rb{1-\frac\eta{2-\eta}+\frac{3\eta}{1-\eta}}.
+\label{TPT1:final}
+\end{equation}
+This is the first order TPT result. It required some argumentation, but at that point
+we can see that the Wertheim formalism combined with the Carnahan Starling EOS reduced
+infinite sums of graphs to a comparably simple equation in the two variables $\nu$ and $\eta$.
+Note, however, that these results are not analytical even for systems that only contain dimers
+and monomers because we ignored all dimer-dimer interaction. 
 
+\subsection{Second Order TPT}
+\newcommand\tocc{\dc_{\te{TPT2}}}
+For the second order of TPT,
+\begin{equation}
+\tocc=\kt+\kappa_3.
+\end{equation}
+We face another integral of the form
+\begin{equation}
+\begin{aligned}
+I_2:=\frac 1 {\Om^2}\int\di(2)&\di(3)\fab(12)\fab(23)\\
+&\times\ed{g_R(123)-g_R(12)g_R(23)}.
+\end{aligned}
+\end{equation}
+It can be shown that
+\begin{equation}
+\frac{1}{\si_A\si_B}\delti{\kappa_3}{\si_{0}}=\frac{1}{\si_B\si_{0}}\delti{\kappa_3}{\si_{A}}
+=\frac{1}{\si_A\si_{0}}\delti{\kappa_3}{\si_{B}}=I_2.
+\end{equation} 
+With that, we find
+\begin{equation}
+\begin{aligned}
+c_A&=\si_A I_1+\siz\si_A I_2, \\
+c_B&=\si_B I_1+\siz\si_B I_2, \\
+c_{AB}&=\si_A\si_B I_2.
+\end{aligned}
+\end{equation}
+This means
+\begin{equation}
+\begin{aligned}
+\tr_A&=\roz\rb{\si_A I_1+\siz\si_A I_2}, \\
+\tr_B&=\roz\rb{\si_B I_1+\siz\si_B I_2}, \\
+\tr_{AB}&=\frac {\tr_A\tr_B}{\roz}+\roz\sia\sib I_2
+\end{aligned}
+\end{equation}
+and finally
+\begin{equation}
+\begin{aligned}
+\frac{\si_A-\siz}{\sia}&=\siz I_1+\siz^2 I_2,\\
+\frac{\sib-\siz}{\sib}&=\siz I_1+\siz^2 I_2,\\
+\si_{AB}\si_0&=\si_A\si_B+\siz^2\sia\sib I_2.
+\end{aligned}
+\label{TPT2:sigmas}
+\end{equation}
+Again, mathematics yields the physical condition that $\sia=\sib$, so we will
+use $\sig$ again. We switch to $\nu$ and $\tau$ to find
+\begin{equation}
+\begin{aligned}
+\nu-\tau=&\siz\sig I_2,\\
+\tau-1=&\sig I_1+\siz\sig I_2.
+\end{aligned}
+\label{TPT2:tau,nu}
+\end{equation}
+This means for the compressibility
+\begin{equation}
+\begin{aligned}
+\frac{\be(p-p_R)}\tr=&-1+\nu\iv-\sig^2 I_1'+\siz\sig^2 I_2'
+%=&\rb{-1+\nu\iv}\rb{1+\tr\frac{I_1'}{I_1}}+\siz\sig^2 I_2'.
+\end{aligned}
+\label{TPT2:exccessP:simple}
+\end{equation}
+This equation is not quite the one we want to end up with. For once, it
+contains $I_1'$ and $I_2'$, which will depend on powers of some constant in the glue spot limit.
+And even more troublesome, $I_2$ and thus $I_2'$ contain $g_R(123)$, of which
+there is only very poor knowledge. The appearance of $g_R(123)$ can not
+entirely be mended, but we will look for a form in which we may be able
+to approximate this unknown value. We do so using the system of equations
+\eqref{TPT2:tau,nu} and the definition of $\tau$ in \eqref{TPT:tau}, yielding
+\begin{equation}
+\begin{aligned}
+2\tau-\nu-1=&\sig I_1,\\
+\tau\rb{\nu-\tau}=&\sig^2 I_2.
+\end{aligned}
+\end{equation}
+In this equation, we can eliminate $\sig$ to find
+\begin{equation}
+\rb{2\tau-\nu-1}^2 \la = \tau\rb{\nu-\tau}.
+\label{TPT2:solvingLGS} 
+\end{equation} 
+The new factor
+\begin{equation}
+\la:=\frac {I_2} {I_1^2}
+\label{TPT2:la}
+\end{equation}
+will prove very valuable. It is especially independent of any constants arising
+in the integration of $I_1$ and $I_2$. As we do not know much about $I_2$, it makes
+sense considering it an unknown, which means that $\la$ can be viewed as an unknown.
+% % Equation \eqref{TPT2:solvingLGS} can be solved for $\tau$ to get an
+%equation for it that depends only on $\nu$ and $\la$.
+
+We now try to apply the simplification we used in the TPT1 case to introduce
+\mbox{$I_1'/I_1$} into the compressibility expression. Again, we calculate
+\begin{equation}
+\begin{aligned}
+\rb{1-\nu\iv}\tr=&\tr_G+\tr_{AB}=\rog+\frac {\rog^2}\roz+\siz\sig^2 I_2 \\
+=&\frac \rog \roz \sig+\siz\sig^2 I_2=\sig^2 I_1 + 2 \siz\sig^2I_2.
+\end{aligned}
+\end{equation}
+On the other hand, we have by \eqref{TPT:nu-tau}
+\begin{equation}
+\siz\sig^2 I_2=\siz c_{AB}=\rb{\nu-\tau}\siz \tau=\frac{\nu-\tau}{\nu}\tr.
+\end{equation}
+The derivativs of $I_2$ appear in $\la$, and we find
+\begin{equation}
+\la'=\rb{\frac {I_2} {I_1^2}}'=I_2'\frac {1} {I_1^2} - 2 I_1' \frac {I_2} {I_1^3}=
+\la\rb{\frac {I_2'} {I_2}-2 \frac {I_1'} {I_1}}.
+\end{equation}
+Now, putting all these calculations together, and going from $\tr$ differentiation
+to $\e$ differentiation, we obtain
+\begin{equation}
+\begin{aligned}
+\frac{\be(p-p_R)}\tr=&\rb{-1+\nu\iv}\rb{1+\e\frac{I_1'}{I_1}}+\frac{\nu-\tau}{\nu}\frac{\e\la'}\la.
+\end{aligned}
+\end{equation}
+We will use this equation for the excess compressibility factor. It avoids the
+problems we discussed about equation \eqref{TPT2:exccessP:simple} as good as
+possible, though now the value $\tau$ is explicitly present. However, by
+\eqref{TPT2:solvingLGS}, $\tau$ is the solution of a polynomial equation of
+second order. It can be given dependent on $\nu$ and $\la$ by
+\begin{equation}
+\tau=\nu\ed{\frac1 2+\frac{2\la}{\rb{1+4\la}\nu}+\frac{\sqrt{1+4\la-4\la\nu^{-2}}}{2\rb{1+4\la}}},
+\end{equation}
+which means
+\begin{equation}
+\frac{\nu-\tau}{\nu}=\frac 1 2 - \frac{2\la}{\rb{1+4\la}\nu}-\frac{\sqrt{1+4\la-4\la\nu^{-2}}}{2\rb{1+4\la}}.
+\end{equation}
+For small $\la$, we can use a Taylor expansion of this expression. Then, the excess compressibility factor
+is given in a first order approximation by
+\begin{equation}
+\begin{aligned}
+\frac{\be(p-p_R)}\tr=&\rb{-1+\nu\iv}\rb{1+\e\frac{I_1'}{I_1}}\\
+&+\rb{-1+\nu\iv}^2\e\la'+O(\la'\la).
+\end{aligned}
+\label{TPT2:excessP:final}
+\end{equation}
+Wertheim states that $\la$ is sufficiently small to truncate the series at this.
+In the glue spot limit, which will be our concern for the next section, we
+can reuse the TPT1 equations and drop the residual to obtain
+\begin{equation}
+\begin{aligned}
+\frac{\be(p-p_R)}\tr=&\rb{-1+\nu\iv}\rb{1-\frac\eta{2-\eta}+\frac{3\eta}{1-\eta}}\\
+&+\rb{-1+\nu\iv}^2\e\la'.
+\end{aligned}
+\label{TPT2:excessP:gluespot}
+\end{equation}
+
+\subsubsection{Looking for $\la$}
+$\la'$ is the last brick missing in the wall to solve \eqref{TPT2:excessP:gluespot}. Wertheim himself
+proposes the expression
+\newcommand\lawh{\la_{WH}}
+\newcommand\lao{\la_{opt}}
+\newcommand\lanu{\la'_{\tilde \nu}}
+\newcommand\laf{\la'_{4}}
+\newcommand\lae{\la'_{8}}
+\newcommand\las{\la'_{16}}
+\newcommand\lai{\la'_{\infty}}
+\newcommand\zsim{Z_{SIM}}
+\newcommand\zr{Z_{R}}
+\newcommand\enui{\e^\nu_i}
+\begin{equation}
+\lawh=0.234 \e\rb{1+1.482\e}.
+\label{TPT:la:laWH}
+\end{equation}
+It comes from an analytical calculation he performed in the limit $\e=0$ and
+a fitting this result to data of Uehara \etal\cite{Uehara1979}.
+
+%% CHECK: Einheiten von \eta? Simulationsvolumen? Temperatur? Chem. Pot?
+The approach we chose is, admittedly, less rigorous. We considered system with chain
+lengths \mbox{$\nu\in\st{4,8,16}$}.
+For each chain length $\nu$, we performed $K^\nu\in\N$ simulations\cite{GrossSimRef}.
+The temperature and volume of the systems were kept fix for all simulations, they only differ in a set
+\mbox{$\st{\enui\ |\ 1 \le i \le K^\nu}$} of packing densities. We therefore obtained
+pairs \mbox{$(\enui,\zsim(\nu,\e^\nu_i))$}. The values for the packing density were always 
+$0\le\enui< 4$, where the maximum value for $\enui$ decreased with increasing chain length.
+For most of what follows, we drop the index $i$ again and consider the equations to be
+understood as pointwise. There should not be too much ambiguity arising from that, and notation
+is shorter.
+
+With the simulated $\zsim$, we can calculate the optimal $\lao'$, that is the
+$\la'$ reproducing the simulation results in the TPT2 approach.
+\begin{equation}
+\lao'=\frac{\zsim-\zr}{\e\rb{\nu\iv-1}^2}-\frac1{\nu\iv-1}\rb{\frac 1 \e -\frac1{2-\eta}+\frac{3}{1-\eta}},
+\label{TPT:la:laopt}
+\end{equation} 
+in which $\zr$ is given by the Carnahan-Starling EOS \eqref{TPT:CSEOS} as usual. The remaining
+task was to fit a function for $\la'$ to \eqref{TPT:la:laopt}. This idea has the advantage
+of -- potentially -- approximating the simulation data very accurately. One of the key disadvantages
+is that it demands that the TPT2 order should be well converged to the actual result, so it
+is not improvable by systematically including higher order TPT corrections, and indeed its demand
+of accurate TPT2 is physically wrong.
+
+Nevertheless, if physical insight is not of highest priority, fitting to $\lao'$ should
+be qualified to yield good results. We are also not interested in $\la$ itself, so we
+do not have to be able to recover $\la$ from the function $\la'$ we choose to approximate $\lao'$.
+
+%%CHECK: \la' überall im Bild.
+\begin{figure}[here]
+\includegraphics[width=.5\textwidth]{Figures/LambdasInOnePic.jpg}
+\caption{The optimal $\lao'$ values for different chain lengths by \eqref{TPT:la:laopt}
+and the Wertheim approximation $\lawh$ by \eqref{TPT:la:laWH}.}
+\label{figure:LambdasInOnePic}
+\end{figure}
+
+
+There are four important aspects that have to be considered before one can properly
+tackle the problem of approximation:
+
+\textbf{$\nu$ dependence.} There are two main classes of approximations:
+those which, like the actual $\la$ and $\la'$, only depend on $\e$; and those which also depend
+on $\nu$. We call the first class \ep{$\nu$ fix} functions. It will contain $\laf$, $\lae$ and $\las$, which
+are approximations to the $\lao'$ for $\nu=4,8$ and $16$, respectively. We also consider
+$\lai$, which is a $\nu$ independent approximation, but fitted not only to one
+but to all three $\lao'$ at once. And then there is the function that contains a
+$\nu$ independence, $\lanu$. We call it simply the \ep{$\nu$ dependent} function. Since
+it has the most degrees of freedom, the $\nu$ dependent function must be potentially
+superior to the $\nu$ fix functions in an overall context, while the $\nu$ fix functions
+will obviously be better for the $\nu$ value they were fitted to (which excludes $\lai$).
+
+\textbf{Data selection.} Consider Figure \ref{figure:LambdasInOnePic}. The stars are simulation data
+points. We can see that for each $\nu$ the simulation results have increasing noise
+towards high $\e$. For $\nu=8$ and especially $\nu=16$ they also change strongly
+at low $\e$. We therefore deem it sensible to restrict the fitting efforts to the
+areas where $\lao'$ is well-behaved and to neglect data points where $\e$ is too
+high and also those with very small $\e$. 
  
-We will only consider the case of two sites per particle, so we have
+\textbf{Residual definition.} We want to find the optimum $\la'$ with respect to $\lao'$. 
+But the optimum needs further definition. There are of course numerous possibilites
+for the fitting function, of which we chose a simple \ep{least squares fit}, that
+is we try to minimize the \ep{root mean square deviation} (RMS) 
+%%CHECK: eigentlich muss das noch für \nu-variable \la angegeben werden.
+\newcommand\LS{\Dl_{RMS}}
+\begin{subequations}
+\label{TPT:la:LSQ}
+\begin{align}
+\LS^\nu\ed{\la'}:=&\sqrt{\frac 1 {K^\nu} \sum_{i=1}^{K^\nu} \rb{\lao'(\enui,\nu)-\la'(\enui,\nu)}^2},
+\label{TPT:la:LSQ1}\\
+\LS\ed{\la'}:=&\sqrt{\sum_{\nu}\frac 1 {K^\nu}\sum_{i=1}^{K^\nu} \rb{\lao'(\enui,\nu)-\la'(\enui,\nu)}^2}.
+\label{TPT:la:LSQ2} 
+\end{align} 
+\end{subequations}
+The two definitions are either for a single $\nu$ or for all $\nu$. We will need
+both. It would also be possible to include a weighting function in
+\eqref{TPT:la:LSQ} , but since
+we do not consider any $\e$ interval to be of higher or lower importance than
+another (except for those we already neglected), we have no reason to use such a
+function.
+
+\textbf{Functional form.} The approximation potential does of course highly depend on
+the functional form we allow our approximative functions $\la'$ to take. Wertheim
+chose a first order polynomial. One can see in Figure \ref{figure:LambdasInOnePic}
+that his coefficients do not reproduce $\lao'$ very accurately (which was never
+his intention). But even with better coefficients, the curvature of the
+$\lao'$ will not be ideally reproduced. However, a fit of this type is useful.
+We call them first order polynomial fit and define
+\newcommand\po{{p1}}
+\newcommand\lanupo{\la_{\tilde \nu,p1}}
 \begin{equation}
 \begin{aligned}
-\be A =& \inon \siga(1)\ln\rb{\siz(1)\lath^3} - \inon \si_A(1) \\
- &-\inon\si_B(1) + \inon \frac{\si_A(1)\si_B(1)}{\si_0} - \cze.
+\la_\po:=&c_1^\po+c_2^\po\e.%\\
+%\lanupo:=&c_1(\nu)+c_2(\nu)\e.
 \end{aligned}
-\label{TPT:beA}
+\label{TPT:la:p1}
 \end{equation}
-The excess energy is then simply
+For a $\nu$ dependent $\la$ the coefficients will be $\nu$ dependent.
+Analogously, we can use a second order polynomial
+\newcommand\pt{{p2}}
+\newcommand\lanupt{\la_{\tilde \nu,p2}}
 \begin{equation}
 \begin{aligned}
-\be (A-A_R) =& \inon \siga(1)\ln\rb{\frac{\siz(1)}{\siga(1)}} + \siga(1) \\
-&- \si_A(1) -\si_B(1) + \frac{\si_A(1)\si_B(1)}{\si_0} - \Dl\cze. %{\cze - \chs}.
+\la_\pt:=&c_1^\pt+c_2^\pt\e+c_3^\pt\e^2.%,\\
+%\lanupt:=&c_1(\nu)+c_2(\nu)\e+c_3(\nu)\e^2.
 \end{aligned}
-\label{TPT:excessEnergy}
+\label{TPT:la:p2}
 \end{equation}
-The $\Dl\cze$ is the sum of all graphs in $\cze$ not purely interacting by repulsion, since
+%The different $c_j$ coefficients are not the same in \eqref{TPT:la:p1}
+%and \eqref{TPT:la:p2}. 
+Finally, we tried a third approach with a gaussian
+bell curve. The motivation to use this function was mostly that the
+$\nu=4$ and $\nu=8$ curves for $\lao'$ seemed to increase in decay toward high
+$\e$ values, and that especially for high $\e$ the polynomial functions
+would increase towards infinite values, possible destroying the decent
+results obtained by TPT1, while the exponential curve just returns
+the TPT1 compressibility factors for high $\e$. The exponential curve
+is given by the parameters
+\newcommand\ex{{ex}}
 \begin{equation}
-\Dl\cze=\cze-\chs.
-\end{equation}
-We also want an expression for the excess pressure. We can use \eqref{WH:MultDens:lnXibyQ}
-to that end, yielding
-%% CHECK: \rho vs \bar\rho
-% We use a dummy: tpt rho: tr
-\begin{equation}
-\begin{aligned}
-\be \rb{p-p_R}V =& \inon \lt[\vphantom{\frac 1 2}-\siga(1)+\si_A(1)+\si_B(1)\rt.\\
-&-\lt.\frac{\si_A(1)\si_B(1)}{\siz(1)}\rt] + \Dl\cze \\
-&- \inon\siga\delti{\Dl\cze}{\siga(1)}.
-\end{aligned}
-\end{equation}
-The reference system contains only hard spheres with diameter $D$ as in \eqref{WH:HS} at the
-density $\tr$ of the real system. It can be reasonably well described by
-the \ep{Carnahan-Starling} EOS\cite{CarnahanStarling}
-\begin{equation}
-\frac{\be p_R}{\tr}=\frac{1+\e+\e^2-\e^3}{\rb{1-\e}^3}
-\end{equation}
-with the \ep{packing density}
-\begin{equation}
-\e=\frac 1 6 \pi\tr D^3
-\end{equation}
-%Sine it can be more
-%easily compared, we give another form of $\be A$ we did not derive in the previous section,
+\la_\ex=c_1^\ex \exp\rb{\frac {\rb{\e-c_2^\ex}^2}{c_3^\ex}}.
+\label{TPT:la:ex}
+\end{equation} 
+
+
+
 \section{Conclusions}
 \label{Con}
 
