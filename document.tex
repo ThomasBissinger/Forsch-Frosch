@@ -1,7 +1,5 @@
 \documentclass[8.5pt,twoside,twocolumn]{article}
 %% CHECK: Remove all ``CHECK'' comments by solving their problems
-%% CHECK: Weighting by the correct symmetr number is pointless. We should change
- %        that in the explanation. Sumewhere in section 2.
 %% CHECK: Maybe better to include that sometimes by graphs sets are meant,
  %        sometimes sums. 
 %% CHECK: Graph alignment with array environment.
@@ -10,6 +8,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{MyChem}
 \usepackage{MyStandard}
+\usepackage{courier}
 \usepackage{booktabs}
 \usepackage{tabto}
 \usepackage{tabu}
@@ -62,6 +61,7 @@
 \newcommand\sustline{\enmat{\suseq\hskip-.1cm^*}}
 \newcommand\supst{\enmat{\hskip.035cm^*\hskip-.04cm\supseq}\hphantom{.}}
 
+\newcommand\id{\hskip.2cm}
 \newcommand\pab{\enmat{\phi_{AB}}}
 
 \newcommand\fab{\enmat{f_{AB}}}
@@ -155,7 +155,7 @@ Prof. Dr.-Ing. J. Groß \\[.4cm]
 M. Sc. Wasilios Zmpitas}\\[.4cm]
 
 
-{ \Large  Institut für Technische Thermodynamik, Universität Stuttgart, June 2015}
+{ \Large  Institut für Technische Thermodynamik, Universität Stuttgart, December 2015}
 
 
 % Author and supervisor
@@ -179,16 +179,17 @@ M. Sc. Wasilios Zmpitas}\\[.4cm]
   \begin{@twocolumnfalse}
     \maketitle
     \begin{abstract}
-      This abstract will explain the work's basic idea. And basic conclusions, if existent. And be superfunny, like, jokes and satirical remarks on
-      current political debate and lots of references to VIPs unknown outside of the US and best to be forgotten immediately after reading
-      a way too long wikipedia article on them.
+      In this work, we give an introduction to the fundamentals of graph theory. We explore M.S. Wertheim's
+      multiple density formalism in analogy to the procedure of the Mayer cluster expansion.
+      The parameter $\la'$ in the second order TPT approximation by Wertheim is fitted to
+      simulation results to obtain more accurate approximations than with the former
+      fit. 
 \\
 \\
     \end{abstract}
   \end{@twocolumnfalse}
 ]
 \section{Introduction}
-And we will introduce stuff here. Probably something with energy and mass. Physics, like grown-up people's physics.
 
 This introductory article is meant to give the key ingredients to understanding M.S. Wertheim's theory, presented in
 references \cite{Wertheim1}\cite{Wertheim2}\cite{Wertheim3}\cite{Wertheim4}\cite{WertheimTPT}. To that end, Section \ref{GrT}
@@ -196,9 +197,7 @@ will introduce the fundamental ideas of graph theory, which will be applied to t
 to derive the \ep{Mayer Cluster Expansion} (MCE) in Section \ref{MCE}. Since Wertheim follows an analogous argumentation to the
 MCE, Section \ref{WH} will simply illustrate the major variations proposed by Wertheim and explain their advantages. Section
 \ref{TPT} uses \ep{Thermodynamic Perturbation Theory} (TPT) to yield approximations to compressibility values. These results are
-compared and fitted to simulation results. Section \ref{Con} gives concluding remarks.
-
-
+compared and fitted to simulation results. Section \ref{Con} gives concluding remarks and an outlook.
 
 
 \section{Graph Theory}
@@ -339,7 +338,7 @@ all resulting in the same graph. This is in agreement with the mathematical intu
 integration variables can be named arbitrarily as long as they stay well-defined and
 distinguishable. However, we will see in Section \ref{MCE} that when using graphs to
 analyze the grand canonical ensemble, the prefactors of the arising graphs play an important
-role. Therefore, some authors (e.g. Morita \& Hiroike in their definitions $3$ and $3'$ \cite{Hiroike})
+role. Therefore, some authors (e.g. Morita \& Hiroike in their definitions $3$ and $3'$ \cite{MoritaHiroike})
 use a definition that distinguishes between graphs with labelled field points and graphs with unlabelled
 field points. We will also give this definition for completeness, but note that we will not stick to it.
 For a deeper understanding, we will consider the graph
@@ -568,7 +567,7 @@ by symmetry numbers yields a useful lemma, which we will give without a prove.
 %  of graph labels on field points, and in the simple example of equation \eqref{funcderi:ex} it is clear that
 %  this number is 2.
 %
-% Some authors, like Hiroike and Morita \cite{Hiroike}, include it in the
+% Some authors, like Hiroike and Morita \cite{MoritaHiroike}, include it in the
 % definition of a graph, multiplying the right hand side of equation \eqref{fielddefinition} by $\frac 1 s$.
 % Despite advantages especially in dealing with functional derivatives (the factor 1 on the left
 % hand side of equation \eqref{funcderi:ex} would lead to a factor $\frac 1 2$ in the following
@@ -765,7 +764,7 @@ the expressions would not necessarily be equal.
 
 \subsection{Exponentials of Graphs}
 At the end of this section, we give two very powerful lemmas which are crucial for many
-applications of graph theory. A proof can be found in Hiroike and Morita \cite{Hiroike} (Lemmas 3 and 4),
+applications of graph theory. A proof can be found in Morita and Hiroike \cite{MoritaHiroike} (Lemmas 3 and 4),
 we will just give the basic idea behind it. The first lemma is
 
 \begin{lem}
@@ -2892,7 +2891,7 @@ This can be paired with \eqref{TopRed:beA_2} to find an expression for
 There is also a representation of $A$ entirely independent of $\calp(1)$. It can be
 derived from \eqref{WH:MultDens:beA} by inserting a reformulation of $\calp$ in
 terms of the $\si_\ga$ for $\ga \suseq \al$. The approach prominently features
-dual numbes \cite{DualNumbers}, which favor some rather elegant manipulations of graph
+Clifford's dual numbes, which favor some rather elegant manipulations of graph
 sums, yet they are more technical than what we used so far. We will not
 go into the details here and simply name the final result that
 \newcommand\siga{\enmat{\si_\Ga}}
@@ -3585,6 +3584,7 @@ can reuse the TPT1 equations and drop the residual to obtain
 \subsubsection{Looking for $\la$}
 $\la'$ is the last brick missing in the wall to solve \eqref{TPT2:excessP:gluespot}. Wertheim himself
 proposes the expression
+\renewcommand\infty{{all}}
 \newcommand\lawh{\la_{WH}}
 \newcommand\lao{\la_{opt}}
 \newcommand\lanu{\la'_{\tilde \nu}}
@@ -3605,7 +3605,7 @@ a fitting this result to data of Uehara \etal\cite{Uehara1979}.
 %% CHECK: Einheiten von \eta? Simulationsvolumen? Temperatur? Chem. Pot?
 The approach we chose is, admittedly, less rigorous. We considered system with chain
 lengths \mbox{$\nu\in\st{4,8,16}$}.
-For each chain length $\nu$, we performed $K^\nu\in\N$ simulations\cite{GrossSimRef}.
+For each chain length $\nu$, we performed $K^\nu\in\N$ simulations\cite{Westen2013}.
 The temperature and volume of the systems were kept fix for all simulations, they only differ in a set
 \mbox{$\st{\enui\ |\ 1 \le i \le K^\nu}$} of packing densities. We therefore obtained
 pairs \mbox{$(\enui,\zsim(\nu,\e^\nu_i))$}. The values for the packing density were always 
@@ -3631,7 +3631,6 @@ Nevertheless, if physical insight is not of highest priority, fitting to $\lao'$
 be qualified to yield good results. We are also not interested in $\la$ itself, so we
 do not have to be able to recover $\la$ from the function $\la'$ we choose to approximate $\lao'$.
 
-%%CHECK: \la' überall im Bild.
 \begin{figure}[here]
 \includegraphics[width=.5\textwidth]{Figures/LambdasInOnePic.jpg}
 \caption{The optimal $\lao'$ values for different chain lengths by \eqref{TPT:la:laopt}
@@ -3643,25 +3642,27 @@ and the Wertheim approximation $\lawh$ by \eqref{TPT:la:laWH}.}
 There are four important aspects that have to be considered before one can properly
 tackle the problem of approximation:
 
-\textbf{$\nu$ dependence.} There are two main classes of approximations:
+\id\textbf{$\nu$ dependence.} There are two main classes of approximations:
 those which, like the actual $\la$ and $\la'$, only depend on $\e$; and those which also depend
 on $\nu$. We call the first class \ep{$\nu$ fix} functions. It will contain $\laf$, $\lae$ and $\las$, which
 are approximations to the $\lao'$ for $\nu=4,8$ and $16$, respectively. We also consider
 $\lai$, which is a $\nu$ independent approximation, but fitted not only to one
-but to all three $\lao'$ at once. And then there is the function that contains a
+but to all three $\lao'$ at once. 
+%The $\infty$ is not meant as an extrapolation.
+And then there is the function that contains a
 $\nu$ independence, $\lanu$. We call it simply the \ep{$\nu$ dependent} function. Since
 it has the most degrees of freedom, the $\nu$ dependent function must be potentially
 superior to the $\nu$ fix functions in an overall context, while the $\nu$ fix functions
 will obviously be better for the $\nu$ value they were fitted to (which excludes $\lai$).
 
-\textbf{Data selection.} Consider Figure \ref{figure:LambdasInOnePic}. The stars are simulation data
+\id\textbf{Data selection.} Consider Figure \ref{figure:LambdasInOnePic}. The stars are simulation data
 points. We can see that for each $\nu$ the simulation results have increasing noise
 towards high $\e$. For $\nu=8$ and especially $\nu=16$ they also change strongly
 at low $\e$. We therefore deem it sensible to restrict the fitting efforts to the
 areas where $\lao'$ is well-behaved and to neglect data points where $\e$ is too
 high and also those with very small $\e$. 
  
-\textbf{Residual definition.} We want to find the optimum $\la'$ with respect to $\lao'$. 
+\id\textbf{Residual definition.} We want to find the optimum $\la'$ with respect to $\lao'$. 
 But the optimum needs further definition. There are of course numerous possibilites
 for the fitting function, of which we chose a simple \ep{least squares fit}, that
 is we try to minimize the \ep{root mean square deviation} (RMS) 
@@ -3683,7 +3684,7 @@ we do not consider any $\e$ interval to be of higher or lower importance than
 another (except for those we already neglected), we have no reason to use such a
 function.
 
-\textbf{Functional form.} The approximation potential does of course highly depend on
+\id\textbf{Functional form.} The approximation potential does of course highly depend on
 the functional form we allow our approximative functions $\la'$ to take. Wertheim
 chose a first order polynomial. One can see in Figure \ref{figure:LambdasInOnePic}
 that his coefficients do not reproduce $\lao'$ very accurately (which was never
@@ -3694,7 +3695,7 @@ We call them first order polynomial fit and define
 \newcommand\lanupo{\la_{\tilde \nu,p1}}
 \begin{equation}
 \begin{aligned}
-\la_\po:=&c_1^\po+c_2^\po\e.%\\
+\la'_\po:=&c_1^\po+c_2^\po\e.%\\
 %\lanupo:=&c_1(\nu)+c_2(\nu)\e.
 \end{aligned}
 \label{TPT:la:p1}
@@ -3705,14 +3706,14 @@ Analogously, we can use a second order polynomial
 \newcommand\lanupt{\la_{\tilde \nu,p2}}
 \begin{equation}
 \begin{aligned}
-\la_\pt:=&c_1^\pt+c_2^\pt\e+c_3^\pt\e^2.%,\\
+\la'_\pt:=&c_1^\pt+c_2^\pt\e+c_3^\pt\e^2.%,\\
 %\lanupt:=&c_1(\nu)+c_2(\nu)\e+c_3(\nu)\e^2.
 \end{aligned}
 \label{TPT:la:p2}
 \end{equation}
 %The different $c_j$ coefficients are not the same in \eqref{TPT:la:p1}
 %and \eqref{TPT:la:p2}. 
-Finally, we tried a third approach with a gaussian
+Finally, we tried a third approach with a Gaussian
 bell curve. The motivation to use this function was mostly that the
 $\nu=4$ and $\nu=8$ curves for $\lao'$ seemed to increase in decay toward high
 $\e$ values, and that especially for high $\e$ the polynomial functions
@@ -3722,14 +3723,254 @@ the TPT1 compressibility factors for high $\e$. The exponential curve
 is given by the parameters
 \newcommand\ex{{ex}}
 \begin{equation}
-\la_\ex=c_1^\ex \exp\rb{\frac {\rb{\e-c_2^\ex}^2}{c_3^\ex}}.
+\la'_\ex:=c_1^\ex \exp\rb{-\frac{\rb{\e-c_3^\ex}^2}{c_2^\ex}}.
 \label{TPT:la:ex}
 \end{equation} 
 
+Now we have gathered the proper definitions and data selections to find approximating
+functions. Just a quick word on nomenclature: we will call the $\nu$ fix functions
+$\la_{\nu,F}'$ with \mbox{$\nu \in \st{4,8,16,\infty}$} and \mbox{$F \in \st{p1,p2,ex}$}.
+The $\nu$ dependent functions will be called $\la_{\tilde \nu,F}'$. We will look
+at each functional form separately, first establishing the four $\nu$ free approximations
+and guessing from them the $\nu$ dependent approximation, which will then be fitted
+accordingly. MATLAB$^\circledR$ \cite{Matlab} functions \texttt{fminunc} and
+\texttt{fmincon} are used to find the fitting function.
 
+\vskip.3cm
+\id\textbf{$\nu$ fix fits.} We collected the data for the first order polynomial,
+second order polynomial and Gaussian fit in Tables \ref{TPT:tableP1}, \ref{TPT:tableP2}
+and \ref{TPT:tableGauss}, respectively. The RMS values are calculated by \eqref{TPT:la:LSQ1}
+for \mbox{$\nu=4,8,16$} and by \eqref{TPT:la:LSQ2} for $\nu=\infty$.
 
-\section{Conclusions}
+\begin{table}[h]
+  \centering
+  \caption{Coefficients and RMS deviation for the polynomial fit of first order \eqref{TPT:la:p1}.}
+    \begin{tabular}{l | cc | r}
+    %\cline{2-3}
+         & $c^\po_1$ & $c^\po_2$  & RMS \\[2pt]
+    \hline
+    & & \\[-.25cm]
+    $\nu=4$ & 0.467 & -0.441 & 0.0251\\
+    $\nu=8$ & 0.608  & -0.643 & 0.0159\\
+    $\nu=16$ & 0.705 &  -0.897 & 0.0052\\[2pt] \hline
+    & & \\[-.32cm]
+    $\nu=\infty$ & 0.614 &   -0.687 & 0.2932 \\[2pt]
+    \hline
+    \end{tabular}%
+    \label{TPT:tableP1}
+\end{table}
+% RMS for p1 4: 2.251352e-02
+% RMS for p1 8: 1.591368e-02
+% RMS for p1 16: 5.212253e-03
+% RMS for p1 infty: 2.932301e-01
+
+For the first order polynomial, the case $\nu=16$ can already be well approached. As we can
+see in Figure \ref{figure:LambdasInOnePic}, $\lao'$ is close to linear in this case. $\nu=4$,
+however, is more problematic. It is possible that this also amounts from the increasing
+oscillations toward higher $\e$. When we consider the coefficients, we can see that
+they show monotonous behavior. They also appear to be close to linear, that is, since
+we increased the number $\nu$ exponentially, one could maybe describe them rather well
+by a logarithmic function. We will come back to that later.
+ 
+\begin{table}[h]
+  \centering
+  \caption{Coefficients and RMS deviation for the polynomial fit of second order \eqref{TPT:la:p2}.}
+    \begin{tabular}{l | ccc | r}
+    %\cline{2-3}
+         & $c^\pt_1$ & $c^\pt_2$ & $c^\pt_3$  & RMS \\[2pt]
+    \hline
+    & & &\\[-.25cm]
+    $\nu=4$ & 0.416 & 0.423 & -2.555 & 0.0106\\
+    $\nu=8$ & 0.581  & -0.156 & -1.472 & 0.0107\\
+    $\nu=16$ & 0.699 &  -0.754 & -0.475 & 0.0041\\[2pt] \hline
+    & & & \\[-.32cm]
+    $\nu=\infty$ &  0.587 &-0.204 & -1.436 & 0.1830\\[2pt]
+    \hline
+    \end{tabular}%
+    \label{TPT:tableP2}
+\end{table}%
+% RMS for p2 8: 1.061352e-02
+% RMS for p2 4: 1.069520e-02
+% RMS for p2 16: 4.146884e-03
+% RMS for p2 infty: 1.829798e-01
+For the second order polynomial, we can only slightly improve the convergence of the $\nu=16$
+fit while especially the $\nu=4$ fit strongly improves. There is also some improvement in the
+$\nu=8$ fit. Again, the coefficients follow a monotonous pattern, which is again
+close to linear (or rather, logarithmic). 
+
+\begin{table}[h]
+  \centering
+  \caption{Coefficients and RMS deviation for the Gaussian fit function \eqref{TPT:la:ex}.}
+    \begin{tabular}{l | ccc | r}
+    %\cline{2-3}
+         & $c^\ex_1$ & $c^\ex_2$ & $c^\ex_3$  & RMS \\[2pt]
+    \hline
+    & & &\\[-.25cm]
+    $\nu=4$ & 0.435 & 0.142 & 0.086 & 0.0116 \\
+    $\nu=8$ & 0.577 & 0.261 & -0.007 & 0.0105\\
+    $\nu=16$ & 0.779 & 0.480 & -0.233 & 0.0042\\[2pt] \hline
+    & & & \\[-.32cm]
+    $\nu=\infty$ &  0.584 & 0.264 & -0.019 & 0.1832\\[2pt]
+    \hline
+    \end{tabular}%
+    \label{TPT:tableGauss}
+\end{table}%
+% RMS for exp 4: 1.160153e-02
+% RMS for exp 8: 1.050925e-02
+% RMS for exp 16: 4.189941e-03
+% RMS for exp infty: 1.831906e-01
+
+The relation between the second order polynomial and the Gaussian fit function 
+is more interesting. They are both superior to the first order polynomial,
+but the Gaussian function describes the case $\nu=8$ slightly better while
+it is not as good for the $\nu=4$ case. They are equally good for describing
+the case $\nu=16$ and also have similar results for $\nu=\infty$, at least
+when only comparing them in RMS value. Considering the Gaussian fit alone,
+we find again monotonous behavior in the coefficients. However, this case
+seems closer to an actual linear relation between the coefficients and
+$\nu$ instead of $\ln\ed{\nu}$. 
+
+The case $\nu=\infty$ is only poorly covered. The worst RMS deviation
+for a single $\nu$ is still more than an order of magnitude smaller than the
+overall RMS for each approximation. We are interested in a fit that may
+interpolate $\lao$ for $\nu$ values between 4 and 16 (or even extrapolate), so
+a $\nu$ dependent fit seems to be the only option. We will lose in accuracy
+for the single $\nu$ cases, but we hope to improve the fit for the $\nu=\infty$
+case. 
+
+\vskip.3cm
+\id\textbf{$\nu$ dependent fits.} After considering the various $\nu$ fix functions, we want to find $\nu$ dependent
+versions. We already noted for the two polynomial cases that the coefficients seem to
+behave linearly on the logarithmic scale for $\nu$. We therefore assume
+\begin{equation}
+\begin{aligned}
+\la_{\tilde \nu,\po}'%&=\rb{c^\po_{1,1}+c^\po_{1,2}\ln\ed{\nu}}+\rb{c^\po_{2,1}+c^\po_{2,2}\ln\ed{\nu}}\e\\
+&=c^\po_1(\nu)+c^\po_2(\nu)\e, \\
+c^\po_i(\nu):&=c^\po_{i,1}+c^\po_{i,2}\ln\ed{\nu}
+\end{aligned}
+\end{equation}
+for the first order polynomial. After fitting, we find for the coefficients
+\begin{equation}
+\begin{aligned}
+c^\po_1(\nu)&=0.2446+0.1665\ln\ed{\nu},\\
+c^\po_2(\nu)&=0.0187-0.3276\ln\ed{\nu}.
+\end{aligned}
+\end{equation}
+The RMS values can be found in Table \ref{TPT:table:NdepRMS}, as for the other two
+fits. We will compare them later.
+
+We have analogously for the second order polynomial
+\begin{equation}
+\begin{aligned}
+\la_{\tilde \nu,\pt}'&=c^\pt_1(\nu)+c^\pt_2(\nu)\e+c^\pt_3(\nu)\e^2, \\
+c^\pt_i(\nu):&=c^\pt_{i,1}+c^\pt_{i,2}\ln\ed{\nu}.
+\end{aligned}
+\end{equation}
+The coefficients can be fitted to arrive at
+\begin{equation}
+\begin{aligned}
+c^\pt_1(\nu)&=\ph{-}0.1423+0.2013\ln\ed{\nu},\\
+c^\pt_2(\nu)&=\ph{-}1.6104-0.8606\ln\ed{\nu},\\
+c^\pt_3(\nu)&=-4.6831+1.5520\ln\ed{\nu}.
+\end{aligned}
+\end{equation}
+
+In the Gaussian case, the coefficients do not seem to be that well-described with
+logarithmic functions. We will rather use linear relations between the $c^\ex$ and
+$\nu$, as already noted above. This means
+\begin{equation}
+\begin{aligned}
+\la_{\tilde \nu,\pt}'&=c_1^\ex(\nu) \exp\rb{-\frac{\rb{\e-c_3^\ex(\nu)}^2}{c_2^\ex(\nu)}},\\
+c^\ex_i(\nu):&=c^\ex_{i,1}+c^\ex_{i,2}\nu.
+\end{aligned}
+\end{equation}
+Our coefficient suggestion is then
+\begin{equation}
+\begin{aligned}
+c^\ex_1(\nu)&=0.2319+0.0576\nu,\\
+c^\ex_2(\nu)&=0.4216+0.0425\nu,\\
+c^\ex_3(\nu)&=0.0732-0.0503\nu.
+\end{aligned}
+\end{equation}
+
+\begin{table}[h]
+  \centering
+  \caption{RMS deviations for all $\nu$ dependent fits. RMS values are given for sets of only
+  one value for $\nu$ as well as all values of $\nu$ in the row $\nu=\infty$.}
+    \begin{tabular}{l | ccc}
+    %\cline{2-3}
+         & $\la_{\tilde \nu,\po}$ & $\la_{\tilde \nu,\pt}$ & $\la_{\tilde \nu,\ex}$\\[2pt] 
+    \hline
+    & & \\[-.25cm]
+    $\nu=4$ & 0.0244 & 0.0120 & 0.0201 \\
+    $\nu=8$ & 0.0258 & 0.0255 & 0.0146 \\
+    $\nu=16$ & 0.0057 & 0.0047 & 0.0062\\[2pt] \hline
+    & & & \\[-.32cm]
+    $\nu=\infty$ &  0.0560 & 0.0422 & 0.0410 \\[2pt]
+    \hline
+    \end{tabular}%
+    \label{TPT:table:NdepRMS}
+\end{table}%
+% RMS for n dep poly1 (nu=4): 2.447745e-02
+% RMS for n dep poly1 (nu=8): 2.579853e-02
+% RMS for n dep poly1 (nu=16): 5.703572e-03
+% RMS for n dep poly1 (all points): 5.597955e-02
+% RMS for n dep poly2 (nu=4): 1.200317e-02
+% RMS for n dep poly2 (nu=8): 2.550122e-02
+% RMS for n dep poly2 (nu=16): 4.744756e-03
+% RMS for n dep poly2 (all points): 4.224914e-02
+% RMS for n dep Gauss (nu=4): 2.011305e-02
+% RMS for n dep Gauss (nu=8): 1.458760e-02
+% RMS for n dep Gauss (nu=16): 6.199412e-03
+% RMS for n dep Gauss (all points): 4.090007e-02
+Now, we succeeded in finding $\nu$ dependent fits. Comparison of Table \ref{TPT:table:NdepRMS}
+to Tables \ref{TPT:tableP1}, \ref{TPT:tableP2} and \ref{TPT:tableGauss} shows that
+the loss in accuracy for each isolated $\nu$ is well outweighed by the gain in accuracy
+for the overall RMS deviation. The overall deviation is still greater than each single
+deviation, but the difference is now roughly a factor of 2 from the worst single $\nu$ approximation
+as compared to a factor greater than 10. 
+
+So, finally, there is only the question of which fit is best. The answer, however, is not that
+simple. We neither have further experimental nor simulation data to compare the
+results to. We try to give a few arguments: First of all, since none of the three
+fits is particularly complex, the slightly lesser degree of complexity in the first
+order polynomial is not a real advantage. The other two fits are slightly more accurate
+in RMS deviation, therefore we recommend one of them. When only considering the overall RMS, the
+Gaussian fit offers a slight advantage over the second order polynomial.   
+
+Of course, the maximum degree of accuracy depends on the functional form we offered for the
+coefficients. We chose rather vague guesses, due to the fact that we only simulated three
+distinct $\nu$.
+
+\section{Conclusion and Outlook}
 \label{Con}
+We introduced the framework of graph theory and the Mayer formalism. From there, we
+followed Wertheim's reasoning to find more convenient expressions for the grand
+canonical EOS and the free energy in a system governed by highly directional
+attractive forces. By means of thermodynamic perturbation theory, we derived equations
+of state of first and second TPT order, where we fitted a parameter in the latter
+to simulation data. The results are three good approximations within the range of
+our data. We did not check how well the approximation is for different $\nu$ values
+or how strongly we may depend on $\be$ and $V$. This may be a topic for further
+research.
+
+Within our approximation, it would be interesting to closer observe the $\nu$ dependency
+of the fitting function coefficients. With more data points, more elaborate guesses
+could be possible, maybe also for the fitting functions themselves. It could also
+be interesting to find expressions for $\la'$ that are closer to Wertheim's
+analytical value for $\la$ in the case \mbox{$\e \rightarrow 0$}. By that, a compromise
+between pure mathematical approximation and physical reasoning may be possible.
+
+\section*{Acknowledgment}
+I want to thank Professor J. Groß for his support and Mr. Wasilios Zmpitas for
+his introduction to the topic and everything following that.   
+
+
+%\clearpage
+% \bibliographystyle{apalikenotitle}
+\bibliographystyle{ieeetr}
+% \begin{thebibliography}
+\bibliography{BibForsch2}
 
 \end{document}
 
