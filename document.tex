@@ -182,7 +182,7 @@ M. Sc. Wasilios Zmpitas}\\[.4cm]
       In this work, we give an introduction to the fundamentals of graph theory. We explore M.S. Wertheim's
       multiple density formalism in analogy to the procedure of the Mayer cluster expansion.
       The parameter $\la'$ in the second order TPT approximation by Wertheim is fitted to
-      simulation results to obtain more accurate approximations than with the former
+      simulation results to obtain more accurate approximations to simulation data than with the former
       fit. 
 \\
 \\
@@ -2975,7 +2975,7 @@ of attractive bond $f_{AB}$ can link two particles. Furthermore, the system is i
 grand canonical ensemble within the volume $V$ at temperature $T$ and density $\rho$.
 We call this system the \ep{real system} and are interested in calculating its pressure $p$. 
 
-We also impose some more constraints to which graphs may be non-vanishing. For
+We also impose some more constraints on which graphs may be non-vanishing. For
 geometric reasons (i.e. steric incompatibility, cf. Wertheim IV\cite{Wertheim4})
 it is impossible that one site is bonded to more than one other site in a
 different particle. Additionally, there may only be one attraction bond between
@@ -2986,7 +2986,7 @@ considerations.
 
 %% CHECK: sources!
 In TPT, we are interested in systematically approaching the calculation of properties like
-the pressure $p$ or the Helmholtz free energy $A$ -- for which we have expressions
+the pressure $p$ or the Helmholtz free energy $A$ -- for which we so far have expressions
 with infinite sums of graphs -- by equations containing only a finite amount of graphs.
 This usually means that the remainder of the infinite sum is considered negligible in the
 system being examined. For example, when decreasing the density of our real system, graphs of
@@ -2999,7 +2999,7 @@ eventually describe the system accurately.
 %% CHECK: sources.
 Since the hard sphere fluid is easy to treat and there are indeed sophisticated analytical
 expressions for its various properties, we can use it as a \ep{reference system} in the
-study at hand. It is described by the purely repulsive potential of the reference system
+study at hand. It is described by the purely repulsive potential of the real system
 without any attraction. It has the same particle density $\rho$ and Temperature $T$ as the
 real system. Its pressure $p_R$ can be reasonably well described by the \ep{Carnahan-Starling}
 EOS\cite{CarnahanStarling} for the \ep{compressibility factor} $Z_R$ of the reference system
@@ -3019,9 +3019,7 @@ and
 \end{equation}
 with $\Om$ being the integral over angular orientations of
 the particle. The motivation of choosing this value will arise at a later point.
-
-
-The pressure in the real system is described by \eqref{WH:MultDens:lnXibyQ}, with the  
+  
 Since they both obey \eqref{WH:MultDens:lnXibyQ} (with $Q_R(1)=0$), we can quantify the difference
 between the real system and the reference system by
 \begin{equation}
@@ -3038,21 +3036,22 @@ quantity of interest is
 \newcommand\dc{\enmat{\Dl\cze}}
 \newcommand\dcs{\enmat{\dc[s]}}
 \begin{equation}
-\dc=\cze-\chs.
+\dc:=\cze-\chs.
 \end{equation}
 $\chs$ is the graph sum we defined in \eqref{TopRed:czeGraph}. The $\Dl\cze$ is the sum of all
 graphs in $\cze$ not purely interacting by repulsion. Equation \eqref{TPT:excessP} contains
 three unknowns, $\siz$, $\si_A$ and $\si_B$ along with $\dc$, which is itself a function
 of the latter. This function contains infinite sums of graphs, so we are not able to obtain
-results without simplifications. To that end, let us group the graphs in $\dc$
-hierarchically. To that end, we will from now on only consider the graphs in
-$\dc$ with a single $s$-meric \ep{chain} for $s\ge2$. By chain we mean singly
+results without simplifications. The first simplification will be that
+we will from now on only consider the graphs in $\dc$ with a single $s$-meric
+\ep{chain} for $s\ge2$. By chain we mean singly
 and not more than singly connected $s$-mers. Ignoring the graphs with more than one
 chain and possible attractive intraconnection of $s$-mers will not be reasonable
 when self interaction and chain-chain interactions play an important role
 in modelling the fluid. With this approximation, we can isolate all
 remaining graphs containing a dimer, trimer etc. in $\dc$.
-We call these subclasses $\kappa_s$. Obviously,
+We call these subclasses $\kappa_s$. They can be considered as a hierarchical
+order since the $\kappa_s$ for higher $s$ get more important with increasing density. Obviously,
 
 \newcommand\dct{\dc_{\te{TPT}}}
 \begin{equation}
@@ -3106,43 +3105,42 @@ TPT only reatains $\kappa_2$, which is
 \newcommand\kt{\kappa_2}
 \begin{eqnarray}
 \begin{aligned}
-\kt&=&
+\kt&=\ph{\frac 1 2}
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \twograph{$\si_A$}{$\si_B$} %\draw(3,0) node[circle,minimum size=1.5cm,fill=white,draw] (2) {};
 \end{tikzpicture}
-&+&
++\ph{\frac 1 2}
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \threegraph{$\si_A$}{$\si_B$}{$\si_\Ga$}
 \connect{1/3,2/3} 
 \end{tikzpicture}
 \\
-&+&
+&+\ph{\frac 1 2}
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
 \connect{1/3,3/4,4/2} 
 \end{tikzpicture}
-&+&
++\ph{\frac 1 2}
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
 \connect{1/3,3/4,4/2,1/4} 
 \end{tikzpicture}
 \\
-&+\frac 1 2&
+&+\frac 1 2
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
 \connect{1/3,3/4,4/2,1/4,2/3}
 \end{tikzpicture}
-&+\frac 1 2&
++\frac 1 2
 \begin{tikzpicture}[baseline={(current bounding box.center)}]
 \fourgraph{$\si_A$}{$\si_B$}{$\si_\Ga$}{$\si_\Ga$}
 \connect{1/3,4/2,1/4,2/3}
 \end{tikzpicture}
-\\
-&+&\ldots&
++\ph{\frac 1 2}\ldots
 \end{aligned}
 \end{eqnarray}
 We can compare this result to what we found for the hard sphere correlation
-function $\g$ in \eqref{sPoint:gbyrho}, then we have
+function $\g$ in \eqref{sPoint:gbyrho}. Then, we have
 \begin{equation}
 \begin{aligned}
 \kappa_2=&\int\di(1)\di(2)\ 
@@ -3151,7 +3149,7 @@ function $\g$ in \eqref{sPoint:gbyrho}, then we have
   \LHyperpoint{(1.5,0)}{2}{$\si_B$}{2}
   \draw (1B.center) --  (2A.center);
 \end{tikzpicture}
-\times \g\\
+\times\ \g\\
 =&\int\di(1)\di(2)\ \si_A(1)\fab(12)\si_B(2)\g
 \end{aligned}
 \label{TPT:k2}
@@ -3204,7 +3202,7 @@ Simply put, a chain beginning at an $A$ must and at a $B$. We can therefore
 understand $\rho_G$ as the density of chains and $\sig$ as the density of 
 what we shall call \ep{units}, that is either monomers or chains. We can also use that
 the space-dependency of the functions $\sig$ and $\rho_G$ was only an artifact
-of the auxiliary space-dependency of $z$. Therefore, the integrals in \eqref{TPT:excessP:short}
+of the auxiliary space-dependency of $z$. Therefore, the integrands in \eqref{TPT:excessP:short}
 are just constant factors and we get
 \begin{equation}
 \begin{aligned}
@@ -3250,7 +3248,7 @@ Now, one quantity of special interest is
 \end{equation}
 It is the ratio between the total density and the density of units. This could be understood
 as the mean length of units (the mean chain length) in the system. Therefore, necessarily
-$\nu\ge1$. We can use another ratio, namely the ration between the unit density
+$\nu\ge1$. We can use another ratio, namely the ratio between the unit density
 and the monomer density,
 \begin{equation}
 \tau:=\frac{\sig}{\siz}.
@@ -3293,7 +3291,7 @@ and \eqref{TPT:dctbycA}. From there, we can conclude by the calculation we just 
 \end{aligned}
 \end{equation}
 The functional derivative with respect to $\siab$ appearing in \eqref{TPT:excessP:noint}
-can simply be considered to be
+is simply 
 %% CHECK: correct?
 \begin{equation}
 \delti{}{\siab}\inon\rb{\tau-1}=\delti{\rb{\tau-1}}{\siab}.
@@ -3374,8 +3372,7 @@ $\siz$ and $\sig$ by $\nu$ and $\tr$ with \eqref{TPT:nu} and \eqref{TPT1:taunu}
 \siz&=\sig\nu\iv=\tr\nu^{-2}.
 \end{aligned}
 \end{equation}
-We can make insertions in one of the first two equations of \eqref{TPT1:sigmas}
-to obtain
+By insertion in one of the first two equations of \eqref{TPT1:sigmas}, we obtain
 \begin{equation}
 1-\nu\iv=\tr\nu^{-2}I_1.
 \end{equation}
@@ -3395,7 +3392,7 @@ to
 \end{aligned}
 \end{equation}
 which is now only dependent on $I_1'$, $\nu$ and $\tr$. The prime denotes
-differntiation of $I_1$ with respect to $\tr$. An important case is
+differentiation of $I_1$ with respect to $\tr$. An important case is
 rigid chain formation (Wertheim calls this the \ep{glue spot limit}), where
 $f_{AB}$ is just a constant times a $\dl$ peak centered at some point at the particle's
 boundary and therefore
@@ -3414,8 +3411,8 @@ we can write
 \begin{equation}
 \frac{\be(p-p_R)}\tr=\rb{-1+\nu\iv}\rb{1+\tr\frac{I_1'}{I_1}}.
 \end{equation}
-Since the Carnahan-Starling EOS depends on $\eta$ instead of $\tr$, we are more
-interested in an equation also depending on $\eta$. By \eqref{TPT:eta},
+The Carnahan-Starling EOS depends on $\eta$ instead of $\tr$, so we are more
+interested in an equation depending on $\eta$. By \eqref{TPT:eta},
 the variables are linearly dependent, therefore we get
 \begin{equation}
 \frac{\be(p-p_R)}\tr=\rb{-1+\nu\iv}\rb{1+\eta\frac{I_1'}{I_1}},
@@ -3430,11 +3427,11 @@ which means alongside \eqref{TPT1:glueI} that
 \frac{\be(p-p_R)}\tr=\rb{-1+\nu\iv}\rb{1-\frac\eta{2-\eta}+\frac{3\eta}{1-\eta}}.
 \label{TPT1:final}
 \end{equation}
-This is the first order TPT result. It required some argumentation, but at that point
-we can see that the Wertheim formalism combined with the Carnahan Starling EOS reduced
+This is the first order TPT result. At this point
+we can see that the Wertheim formalism combined with the Carnahan Starling EOS reduces
 infinite sums of graphs to a comparably simple equation in the two variables $\nu$ and $\eta$.
 Note, however, that these results are not analytical even for systems that only contain dimers
-and monomers because we ignored all dimer-dimer interaction. 
+and monomers because they ignore all dimer-dimer interaction. 
 
 \subsection{Second Order TPT}
 \newcommand\tocc{\dc_{\te{TPT2}}}
@@ -3537,7 +3534,8 @@ On the other hand, we have by \eqref{TPT:nu-tau}
 \begin{equation}
 \siz\sig^2 I_2=\siz c_{AB}=\rb{\nu-\tau}\siz \tau=\frac{\nu-\tau}{\nu}\tr.
 \end{equation}
-The derivativs of $I_2$ appear in $\la$, and we find
+%The derivatives of $I_2$ appear in $\la$, and we find
+For $\la'$, we find
 \begin{equation}
 \la'=\rb{\frac {I_2} {I_1^2}}'=I_2'\frac {1} {I_1^2} - 2 I_1' \frac {I_2} {I_1^3}=
 \la\rb{\frac {I_2'} {I_2}-2 \frac {I_1'} {I_1}}.
@@ -3600,17 +3598,17 @@ proposes the expression
 \label{TPT:la:laWH}
 \end{equation}
 It comes from an analytical calculation he performed in the limit $\e=0$ and
-a fitting this result to data of Uehara \etal\cite{Uehara1979}.
+fitting this result to data of Uehara \etal\cite{Uehara1979}.
 
 %% CHECK: Einheiten von \eta? Simulationsvolumen? Temperatur? Chem. Pot?
-The approach we chose is, admittedly, less rigorous. We considered system with chain
+The approach we chose is, admittedly, less rigorous. We considered systems with chain
 lengths \mbox{$\nu\in\st{4,8,16}$}.
 For each chain length $\nu$, we performed $K^\nu\in\N$ simulations\cite{Westen2013}.
 The temperature and volume of the systems were kept fix for all simulations, they only differ in a set
 \mbox{$\st{\enui\ |\ 1 \le i \le K^\nu}$} of packing densities. We therefore obtained
 pairs \mbox{$(\enui,\zsim(\nu,\e^\nu_i))$}. The values for the packing density were always 
 $0\le\enui< 4$, where the maximum value for $\enui$ decreased with increasing chain length.
-For most of what follows, we drop the index $i$ again and consider the equations to be
+For most of what follows, we drop the index $i$ again and want the following equations to be
 understood as pointwise. There should not be too much ambiguity arising from that, and notation
 is shorter.
 
@@ -3634,7 +3632,7 @@ do not have to be able to recover $\la$ from the function $\la'$ we choose to ap
 \begin{figure}[here]
 \includegraphics[width=.5\textwidth]{Figures/LambdasInOnePic.jpg}
 \caption{The optimal $\lao'$ values for different chain lengths by \eqref{TPT:la:laopt}
-and the Wertheim approximation $\lawh$ by \eqref{TPT:la:laWH}.}
+and the Wertheim approximation $\lawh'$ by \eqref{TPT:la:laWH}.}
 \label{figure:LambdasInOnePic}
 \end{figure}
 
@@ -3642,7 +3640,7 @@ and the Wertheim approximation $\lawh$ by \eqref{TPT:la:laWH}.}
 There are four important aspects that have to be considered before one can properly
 tackle the problem of approximation:
 
-\id\textbf{$\nu$ dependence.} There are two main classes of approximations:
+\id\textbf{$\nu$ dependency.} There are two main classes of approximations:
 those which, like the actual $\la$ and $\la'$, only depend on $\e$; and those which also depend
 on $\nu$. We call the first class \ep{$\nu$ fix} functions. It will contain $\laf$, $\lae$ and $\las$, which
 are approximations to the $\lao'$ for $\nu=4,8$ and $16$, respectively. We also consider
@@ -3650,22 +3648,23 @@ $\lai$, which is a $\nu$ independent approximation, but fitted not only to one
 but to all three $\lao'$ at once. 
 %The $\infty$ is not meant as an extrapolation.
 And then there is the function that contains a
-$\nu$ independence, $\lanu$. We call it simply the \ep{$\nu$ dependent} function. Since
+$\nu$ dependency, $\lanu$. We call it simply the \ep{$\nu$ dependent} function. Since
 it has the most degrees of freedom, the $\nu$ dependent function must be potentially
 superior to the $\nu$ fix functions in an overall context, while the $\nu$ fix functions
 will obviously be better for the $\nu$ value they were fitted to (which excludes $\lai$).
 
 \id\textbf{Data selection.} Consider Figure \ref{figure:LambdasInOnePic}. The stars are simulation data
 points. We can see that for each $\nu$ the simulation results have increasing noise
-towards high $\e$. For $\nu=8$ and especially $\nu=16$ they also change strongly
+towards high $\e$. For $\nu=8$ and especially $\nu=4$ they also change strongly
 at low $\e$. We therefore deem it sensible to restrict the fitting efforts to the
 areas where $\lao'$ is well-behaved and to neglect data points where $\e$ is too
 high and also those with very small $\e$. 
  
-\id\textbf{Residual definition.} We want to find the optimum $\la'$ with respect to $\lao'$. 
-But the optimum needs further definition. There are of course numerous possibilites
-for the fitting function, of which we chose a simple \ep{least squares fit}, that
-is we try to minimize the \ep{root mean square deviation} (RMS) 
+\id\textbf{Residual definition.} We want to find the $\la'$ closest to $\lao'$. 
+But we need further definition of ``close'' . The key is to minimize some \ep{error function}.
+There are of course numerous possibilites
+for this error function, of which we chose a simple \ep{least squares fit}, that
+is we try to minimize the \ep{root mean square} (RMS) deviation  
 %%CHECK: eigentlich muss das noch für \nu-variable \la angegeben werden.
 \newcommand\LS{\Dl_{RMS}}
 \begin{subequations}
@@ -3679,7 +3678,7 @@ is we try to minimize the \ep{root mean square deviation} (RMS)
 \end{subequations}
 The two definitions are either for a single $\nu$ or for all $\nu$. We will need
 both. It would also be possible to include a weighting function in
-\eqref{TPT:la:LSQ} , but since
+\eqref{TPT:la:LSQ} to stress the importance of $\la'$ at some $\e$ values, but since
 we do not consider any $\e$ interval to be of higher or lower importance than
 another (except for those we already neglected), we have no reason to use such a
 function.
@@ -3700,7 +3699,7 @@ We call them first order polynomial fit and define
 \end{aligned}
 \label{TPT:la:p1}
 \end{equation}
-For a $\nu$ dependent $\la$ the coefficients will be $\nu$ dependent.
+For a $\nu$ dependent $\la$, the coefficients will be $\nu$ dependent.
 Analogously, we can use a second order polynomial
 \newcommand\pt{{p2}}
 \newcommand\lanupt{\la_{\tilde \nu,p2}}
@@ -3716,8 +3715,8 @@ Analogously, we can use a second order polynomial
 Finally, we tried a third approach with a Gaussian
 bell curve. The motivation to use this function was mostly that the
 $\nu=4$ and $\nu=8$ curves for $\lao'$ seemed to increase in decay toward high
-$\e$ values, and that especially for high $\e$ the polynomial functions
-would increase towards infinite values, possible destroying the decent
+$\e$ values while having a maximum at small $\e$. Also, for high $\e$ the polynomial functions
+would increase towards infinite values, possibly destroying the decent
 results obtained by TPT1, while the exponential curve just returns
 the TPT1 compressibility factors for high $\e$. The exponential curve
 is given by the parameters
@@ -3728,9 +3727,11 @@ is given by the parameters
 \end{equation} 
 
 Now we have gathered the proper definitions and data selections to find approximating
-functions. Just a quick word on nomenclature: we will call the $\nu$ fix functions
-$\la_{\nu,F}'$ with \mbox{$\nu \in \st{4,8,16,\infty}$} and \mbox{$F \in \st{p1,p2,ex}$}.
-The $\nu$ dependent functions will be called $\la_{\tilde \nu,F}'$. We will look
+functions. 
+%Just a quick word on nomenclature: we will call the $\nu$ fix functions
+%$\la_{\nu,F}'$ with \mbox{$\nu \in \st{4,8,16,\infty}$} and \mbox{$F \in \st{p1,p2,ex}$}.
+%The $\nu$ dependent functions will be called $\la_{\tilde \nu,F}'$.
+We will look
 at each functional form separately, first establishing the four $\nu$ free approximations
 and guessing from them the $\nu$ dependent approximation, which will then be fitted
 accordingly. MATLAB$^\circledR$ \cite{Matlab} functions \texttt{fminunc} and
@@ -3766,8 +3767,10 @@ for \mbox{$\nu=4,8,16$} and by \eqref{TPT:la:LSQ2} for $\nu=\infty$.
 
 For the first order polynomial, the case $\nu=16$ can already be well approached. As we can
 see in Figure \ref{figure:LambdasInOnePic}, $\lao'$ is close to linear in this case. $\nu=4$,
-however, is more problematic. It is possible that this also amounts from the increasing
-oscillations toward higher $\e$. When we consider the coefficients, we can see that
+however, is more problematic. 
+%It is possible that this also amounts from the increasing
+%oscillations toward higher $\e$.
+When we consider the coefficients, we can see that
 they show monotonous behavior. They also appear to be close to linear, that is, since
 we increased the number $\nu$ exponentially, one could maybe describe them rather well
 by a logarithmic function. We will come back to that later.
@@ -3796,7 +3799,7 @@ by a logarithmic function. We will come back to that later.
 For the second order polynomial, we can only slightly improve the convergence of the $\nu=16$
 fit while especially the $\nu=4$ fit strongly improves. There is also some improvement in the
 $\nu=8$ fit. Again, the coefficients follow a monotonous pattern, which is again
-close to linear (or rather, logarithmic). 
+close to linear for an exponential increase in $\nu$. 
 
 \begin{table}[h]
   \centering
@@ -3833,7 +3836,7 @@ $\nu$ instead of $\ln\ed{\nu}$.
 The case $\nu=\infty$ is only poorly covered. The worst RMS deviation
 for a single $\nu$ is still more than an order of magnitude smaller than the
 overall RMS for each approximation. We are interested in a fit that may
-interpolate $\lao$ for $\nu$ values between 4 and 16 (or even extrapolate), so
+interpolate $\lao'$ for $\nu$ values between 4 and 16 (or even extrapolate), so
 a $\nu$ dependent fit seems to be the only option. We will lose in accuracy
 for the single $\nu$ cases, but we hope to improve the fit for the $\nu=\infty$
 case. 
@@ -3876,7 +3879,7 @@ c^\pt_3(\nu)&=-4.6831+1.5520\ln\ed{\nu}.
 \end{equation}
 
 In the Gaussian case, the coefficients do not seem to be that well-described with
-logarithmic functions. We will rather use linear relations between the $c^\ex$ and
+dependency on $\ln\ed{\nu}$. We will rather use linear relations between the $c^\ex$ and
 $\nu$, as already noted above. This means
 \begin{equation}
 \begin{aligned}
@@ -3934,13 +3937,18 @@ So, finally, there is only the question of which fit is best. The answer, howeve
 simple. We neither have further experimental nor simulation data to compare the
 results to. We try to give a few arguments: First of all, since none of the three
 fits is particularly complex, the slightly lesser degree of complexity in the first
-order polynomial is not a real advantage. The other two fits are slightly more accurate
+order polynomial is not a real advantage. The other two fits are more accurate
 in RMS deviation, therefore we recommend one of them. When only considering the overall RMS, the
-Gaussian fit offers a slight advantage over the second order polynomial.   
+Gaussian fit offers a faint advantage over the second order polynomial.   
 
 Of course, the maximum degree of accuracy depends on the functional form we offered for the
 coefficients. We chose rather vague guesses, due to the fact that we only simulated three
-distinct $\nu$.
+distinct $\nu$. It may have been an advantage that we could identify the coefficients
+of the Gaussian fit with isolated properties of the resulting curve: location of maximum, value of
+maximum and variancy (actually, $2$ times the variancy). The same applies to
+the first order polynomial, while for the second order polynomial we can only
+properly guess the local behavior at $\e=0$ from the function.
+
 
 \section{Conclusion and Outlook}
 \label{Con}
@@ -3951,14 +3959,14 @@ attractive forces. By means of thermodynamic perturbation theory, we derived equ
 of state of first and second TPT order, where we fitted a parameter in the latter
 to simulation data. The results are three good approximations within the range of
 our data. We did not check how well the approximation is for different $\nu$ values
-or how strongly we may depend on $\be$ and $V$. This may be a topic for further
+or how strongly the optimum depends on $\be$ and $V$. This may be a topic for further
 research.
 
 Within our approximation, it would be interesting to closer observe the $\nu$ dependency
 of the fitting function coefficients. With more data points, more elaborate guesses
 could be possible, maybe also for the fitting functions themselves. It could also
 be interesting to find expressions for $\la'$ that are closer to Wertheim's
-analytical value for $\la$ in the case \mbox{$\e \rightarrow 0$}. By that, a compromise
+analytical value for $\la$ and its derivative in the case \mbox{$\e \rightarrow 0$}. By that, a compromise
 between pure mathematical approximation and physical reasoning may be possible.
 
 \section*{Acknowledgment}
